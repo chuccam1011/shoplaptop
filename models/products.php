@@ -35,6 +35,26 @@ class Product extends DB implements Iproduct
             echo $e;
         }
     }
+    function getTopSell()
+    {
+        try {
+            $stm = $this->db->prepare("SELECT * FROM " .  self::tableName . ' WHERE 1 ORDER BY selled DESC LIMIT 5');
+            $stm->execute();
+            return $stm->fetchAll();
+        } catch (\Throwable $e) {
+            echo $e;
+        }
+    }
+    function getTopNew()
+    {
+        try {
+            $stm = $this->db->prepare("SELECT * FROM " .  self::tableName . ' WHERE 1 ORDER BY time_add DESC LIMIT 5');
+            $stm->execute();
+            return $stm->fetchAll();
+        } catch (\Throwable $e) {
+            echo $e;
+        }
+    }
     function insert($payload, $src, $srcOfContent)
     {
         try {
@@ -199,7 +219,6 @@ class Product extends DB implements Iproduct
                     ':title' => $title,
                     ':id' => ($iddetail + ($i - 1))
                 ));
-    
             }
 
             //tra ve so ban ghi
