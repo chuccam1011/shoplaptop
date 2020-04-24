@@ -1,16 +1,16 @@
 <?php
 require_once('./../../lib/upload.php');
 require_once('./../commons/head.php');
-require_once('./../../models/brand.php');
+require_once('./../../models/slider.php');
 if (isset($_SESSION['success'])) {
     unset($_SESSION['success']);
 }
-$brand = new Brand();
 
+$slider = new Slider();
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     if (is_numeric($id)) {
-        $obj = $brand->getBrandById($id);
+        $obj = $slider->getSliderById($id);
     } else {
         header('Location:index.php');
     }
@@ -18,28 +18,26 @@ if (isset($_GET['id'])) {
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
     $realpath = $obj['img'];
-    $upload = new upload();
     if (isset($_FILES['file']) && $_FILES['file']['name']!='') {
-        //   echo "aaa";
-           //xoa file cu
-           if (file_exists('uploads/' . $realpath)) {
-               try {
-                   unlink('uploads/' . $realpath);
-               } catch (Exception $e) {
-                   echo $e->getMessage();
-               }
-           }
-           // up file moi
-           $upload = new upload();
-           $upload->upload();
-           $realpath = $upload->getRealpath();
-           $_POST['file'] = $realpath; //getRealpath -> file name
-           $brand->update($_POST);
-       } else { //nen k co anh dc uploads thi lays nah cu chen vao db
-           $_POST['file'] = $realpath;
-           $brand->update($_POST);
-       }
-
+     //   echo "aaa";
+        //xoa file cu
+        if (file_exists('uploads/' . $realpath)) {
+            try {
+                unlink('uploads/' . $realpath);
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+        }
+        // up file moi
+        $upload = new upload();
+        $upload->upload();
+        $realpath = $upload->getRealpath();
+        $_POST['file'] = $realpath; //getRealpath -> file name
+        $slider->update($_POST);
+    } else { //nen k co anh dc uploads thi lays nah cu chen vao db
+        $_POST['file'] = $realpath;
+        $slider->update($_POST);
+    }
     header('Location:edit.php?id=' . $id);
 }
 
@@ -65,14 +63,20 @@ if (isset($_POST['id'])) {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Tên</label>
                 <div class="col-sm-10">
-                    <input type="text" name="name" value="<?php echo $obj['name'] ?>" required>
+                    <input type="text" name="tittle" value="<?php echo $obj['tittle'] ?>" required>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Hình ảnh</label>
+                <label class="col-sm-2 col-form-label">Hình ảnh</label>
+                <img height="300px" width="500px" src="<?php echo 'uploads/' . $obj['img'];  ?>" alt="">
                 <div class="col-sm-10">
-                    <img height="30px" width="50px" src="<?php echo 'uploads/' . $obj['img'];  ?>" alt="">
                     <input type="file" name="file">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Tên</label>
+                <div class="col-sm-10">
+                    <input type="number" name="product_id" value="<?php echo $obj['product_id'] ?>" required>
                 </div>
             </div>
             <input type="submit" class="btn btn-primary"></input>

@@ -1,12 +1,13 @@
 <?php
-if (isset($_SESSION['success'])) {
-    unset($_SESSION['success']);
-}
+
 require_once('./../commons/head.php');
 require_once('./../../models/products.php');
 require_once('./../../lib/upload.php');
 require_once('./../../models/brand.php');
 require_once('./../../models/cate.php');
+if (isset($_SESSION['success'])) {
+    unset($_SESSION['success']);
+}
 $brand = new Brand();
 $listbrand =  $brand->getAllNoLimit();
 $cate = new Cate();
@@ -26,7 +27,7 @@ if (isset($_GET['id'])) {
 if (isset($_POST['submit'])) {
     $id = $_POST['id'];
     $count = $product->update($_POST);
-    $_SESSION['success'] = "Sua thanh cong " . $count . ' san pham';
+    $_SESSION['success'] = "Sua thanh cong " . ' san pham';
     header('Location:edit.php?id=' . $id);
 }
 ?>

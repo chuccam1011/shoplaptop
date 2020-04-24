@@ -4,7 +4,7 @@ class upload
     public $realPath;
     public function upload()
     {
-        if (isset($_FILES['file']) && $_FILES['file']['name'] != null) {
+        if (true) {
             $size = $_FILES['file']['size'];
             $error = [];
             //nếu mà kích cỡ file mà lớn hơn 1 mb

@@ -1,10 +1,10 @@
 <?php
 
+require_once('./../commons/head.php');
+require_once('./../../models/cate.php');
 if (isset($_SESSION['success'])) {
     unset($_SESSION['success']);
 }
-require_once('./../commons/head.php');
-require_once('./../../models/cate.php');
 $cates = new Cate();
 
 if (isset($_GET['id'])) {

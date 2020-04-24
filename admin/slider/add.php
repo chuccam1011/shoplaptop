@@ -1,19 +1,19 @@
 <?php
-
-require_once('./../commons/head.php');
-require_once('./../../models/brand.php');
-require_once('./../../lib/upload.php');
 if (isset($_SESSION['success'])) {
     unset($_SESSION['success']);
 }
-if (isset($_FILES['file']) && isset($_POST['brandName'])) {
-    $brand = new Brand();
-    ////check file upload
+require_once('./../commons/head.php');
+require_once('./../../models/slider.php');
+require_once('./../../lib/upload.php');
+
+if (isset($_FILES['file']) && isset($_POST['tittle'])) {
+    $slider = new Slider();
+    ///check file upload
     $upload = new upload();
     if ($upload->upload()) {
         $realpath = $upload->getRealpath();
         $_POST['file'] = $realpath;
-        $count = $brand->insert($_POST);
+        $count = $slider->insert($_POST);
     }
     if ($count == 1) {
         $_SESSION['success'] = 'Thêm thành công';
@@ -43,7 +43,7 @@ if (isset($_FILES['file']) && isset($_POST['brandName'])) {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Tên</label>
                 <div class="col-sm-10">
-                    <input type="text" name="brandName" required>
+                    <input type="text" name="tittle" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -52,8 +52,13 @@ if (isset($_FILES['file']) && isset($_POST['brandName'])) {
                     <input type="file" name="file" required>
                 </div>
             </div>
-
-            <input type="submit" name="submit" value="Up Load" class="btn btn-primary"></input>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Sản phẩm</label>
+                <div class="col-sm-10">
+                    <input type="number" name="product_id"  placeholder="Nhập mã sản phẩm" required>
+                </div>
+            </div>
+            <input type="submit" name="submit" value="Thêm Slider" class="btn btn-primary"></input>
         </form>
     </div>
 </body>

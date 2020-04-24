@@ -1,13 +1,13 @@
 <?php
-if (isset($_SESSION['success'])) {
-    unset($_SESSION['success']);
-}
+
 require_once('./../commons/head.php');
 require_once('./../../models/products.php');
 require_once('./../../lib/upload.php');
 require_once('./../../models/brand.php');
 require_once('./../../models/cate.php');
-
+if (isset($_SESSION['success'])) {
+    unset($_SESSION['success']);
+}
 if (isset($_FILES['files']) && isset($_POST['submit'])) {
     $products = new Product();
     //check file upload

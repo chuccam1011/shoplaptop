@@ -45,6 +45,15 @@
                     <a class="dropdown-item" href="http://localhost/laptopcu/admin/cate">Xem</a>
                 </div>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Slider
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="http://localhost/laptopcu/admin/slider/add.php">Thêm</a>
+                    <a class="dropdown-item" href="http://localhost/laptopcu/admin/slider">Xem</a>
+                </div>
+            </li>
             <li class="nav-item logout">
                 <a class="nav-link " href="?logout">
                     Logout
