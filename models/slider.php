@@ -1,5 +1,7 @@
 <?php
-require_once('./../../db.php');
+
+require_once('C:/xampp/htdocs/Laptopcu/db.php');
+//equire_once('./../../db.php');
 require_once('islider.php');
 class Slider extends DB implements Islider
 {
@@ -44,7 +46,7 @@ class Slider extends DB implements Islider
         //tra ve so ban ghi
         return $stm->rowCount();
     }
-    
+
     function delete($id)
     {
         $this->db->query("DELETE FROM " . self::tableName . " WHERE id = " . $id);

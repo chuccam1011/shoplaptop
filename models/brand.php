@@ -1,5 +1,6 @@
 <?php
-require_once('./../../db.php');
+
+require_once('C:/xampp/htdocs/Laptopcu/db.php');
 require_once('ibrand.php');
 class Brand extends DB implements Ibrand
 {

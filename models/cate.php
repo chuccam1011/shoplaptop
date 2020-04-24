@@ -1,5 +1,8 @@
 <?php
-require_once('./../../db.php');
+
+//require_once('./../../db.php');
+
+require_once('C:/xampp/htdocs/Laptopcu/db.php');
 require_once('icate.php');
 class Cate extends DB implements Icate
 {
