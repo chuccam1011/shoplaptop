@@ -2,6 +2,19 @@
 include_once("inc/head.php");
 include_once("inc/top.php");
 ?>
+<?php
+$product = new Product();
+if (isset($_GET['product_id'])) {
+    $id = $_GET['product_id'];
+    $productSingle = $product->getProductById($id);
+    $cate = new Cate();
+    $cateSingle = $cate->getCateById($productSingle['cate_id']);
+    //  var_dump($cateSingle);
+} else {
+    //header('Location:http://localhost/laptopcu');
+}
+
+?>
 
 <div class="product-big-title-area">
     <div class="container">
@@ -21,86 +34,49 @@ include_once("inc/top.php");
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <div class="single-sidebar">
-                    <h2 class="sidebar-title">Search Products</h2>
-                    <form action="">
-                        <input type="text" placeholder="Search products...">
-                        <input type="submit" value="Search">
-                    </form>
-                </div>
-
-                <div class="single-sidebar">
-                    <h2 class="sidebar-title">Products</h2>
-                    <div class="thubmnail-recent">
-                        <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$100.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$100.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$100.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$100.00</del>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="single-sidebar">
-                    <h2 class="sidebar-title">Recent Posts</h2>
-                    <ul>
-                        <li><a href="">Sony Smart TV - 2015</a></li>
-                        <li><a href="">Sony Smart TV - 2015</a></li>
-                        <li><a href="">Sony Smart TV - 2015</a></li>
-                        <li><a href="">Sony Smart TV - 2015</a></li>
-                        <li><a href="">Sony Smart TV - 2015</a></li>
-                    </ul>
-                </div>
+                <?php include_once('inc/singleSlidebar.php') ?>
             </div>
-
+            <!-- ./ end sidebar -->
+            <!-- MAin details -->
             <div class="col-md-8">
                 <div class="product-content-right">
                     <div class="product-breadcroumb">
-                        <a href="">Home</a>
-                        <a href="">Category Name</a>
-                        <a href="">Sony Smart TV - 2015</a>
+                        <a href="index.php">Home</a>
+                        <a href=""><?php echo $cateSingle['name'] ?></a>
+                        <a href=""><?php echo $productSingle['name'] ?></a>
                     </div>
-
+                    <?php $listImg = $product->getImg($productSingle['id']); ?>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="product-images">
                                 <div class="product-main-img">
-                                    <img src="img/product-2.jpg" alt="">
+                                    <?php
+                                    $src = 'admin/product/uploads/' . $listImg[0]['img'];
+                                    if (isset($_GET['img'])) {
+                                        $src = 'admin/product/uploads/' . $_GET['img'];
+                                        echo '<img height="800px" width="1000px" src="' . $src . '" alt="">';
+                                    } else {
+                                        echo '<img height="800px" width="1000px" src="' . $src . '" alt="">';
+                                    }
+                                    ?>
                                 </div>
-
                                 <div class="product-gallery">
-                                    <img src="img/product-thumb-1.jpg" alt="">
-                                    <img src="img/product-thumb-2.jpg" alt="">
-                                    <img src="img/product-thumb-3.jpg" alt="">
+                                    <?php
+                                    foreach ($listImg as $r) {
+                                    ?>
+                                        <a href="?product_id=<?php echo $id ?>&&img=<?php echo  $r['img'] ?>">
+                                            <img src="<?php echo 'admin/product/uploads/' . $r['img'] ?>" alt=""></a>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="product-inner">
-                                <h2 class="product-name">Sony Smart TV - 2015</h2>
+                                <h2 class="product-name"><?php echo $productSingle['name'] ?></h2>
                                 <div class="product-inner-price">
-                                    <ins>$700.00</ins> <del>$100.00</del>
+                                    <ins><?php echo number_format($productSingle['price']) . ' VND' ?></ins>
+                                    <!-- <del>$100.00</del> -->
                                 </div>
 
                                 <form action="" class="cart">
@@ -111,7 +87,8 @@ include_once("inc/top.php");
                                 </form>
 
                                 <div class="product-inner-category">
-                                    <p>Category: <a href="">Summer</a>. Tags: <a href="">awesome</a>, <a href="">best</a>, <a href="">sale</a>, <a href="">shoes</a>. </p>
+                                    <!-- <p>Category: <a href=""><?php  ?></a>. -->
+                                    Keyword: <a href="?seach=<?php echo $productSingle['keyword'] ?> "><?php echo $productSingle['keyword'] ?></a>
                                 </div>
 
                                 <div role="tabpanel">
@@ -121,10 +98,17 @@ include_once("inc/top.php");
                                     </ul>
                                     <div class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade in active" id="home">
-                                            <h2>Product Description</h2>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique, diam in consequat iaculis, est purus iaculis mauris, imperdiet facilisis ante ligula at nulla. Quisque volutpat nulla risus, id maximus ex aliquet ut. Suspendisse potenti. Nulla varius lectus id turpis dignissim porta. Quisque magna arcu, blandit quis felis vehicula, feugiat gravida diam. Nullam nec turpis ligula. Aliquam quis blandit elit, ac sodales nisl. Aliquam eget dolor eget elit malesuada aliquet. In varius lorem lorem, semper bibendum lectus lobortis ac.</p>
-
-                                            <p>Mauris placerat vitae lorem gravida viverra. Mauris in fringilla ex. Nulla facilisi. Etiam scelerisque tincidunt quam facilisis lobortis. In malesuada pulvinar neque a consectetur. Nunc aliquam gravida purus, non malesuada sem accumsan in. Morbi vel sodales libero.</p>
+                                            <h2><?php echo $productSingle['short_desc'] ?></h2>
+                                            <h2><b>Đặc Điểm Nổi Bật</b></h2>
+                                            <hr>
+                                            <?php // layu noi dung chi tiet ve lap top theo id san pham
+                                            $contents = $product->getContentProduct($id);
+                                            foreach ($contents as  $r) { ?>
+                                                <h3><?php echo $r['title'] ?></h3>
+                                                <img height="300px" width="400px" src="<?php echo 'admin/product/uploads/' . $r['img'] ?> " alt="">
+                                                <p><?php echo $r['content'] ?></p>
+                                                <hr>
+                                            <?php } ?>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="profile">
                                             <h2>Reviews</h2>
@@ -133,7 +117,6 @@ include_once("inc/top.php");
                                                 <p><label for="email">Email</label> <input name="email" type="email"></p>
                                                 <div class="rating-chooser">
                                                     <p>Your rating</p>
-
                                                     <div class="rating-wrap-post">
                                                         <i class="fa fa-star"></i>
                                                         <i class="fa fa-star"></i>
@@ -153,101 +136,10 @@ include_once("inc/top.php");
                         </div>
                     </div>
 
+                    <?php
+                    include_once("inc/related.php")
+                    ?>
 
-                    <div class="related-products-wrapper">
-                        <h2 class="related-products-title">Related Products</h2>
-                        <div class="related-products-carousel">
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="img/product-1.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Sony Smart TV - 2015</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$700.00</ins> <del>$100.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="img/product-2.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Apple new mac book 2015 March :P</a></h2>
-                                <div class="product-carousel-price">
-                                    <ins>$899.00</ins> <del>$999.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="img/product-3.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Apple new i phone 6</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$400.00</ins> <del>$425.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="img/product-4.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Sony playstation microsoft</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$200.00</ins> <del>$225.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="img/product-5.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Sony Smart Air Condtion</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$1200.00</ins> <del>$1355.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="img/product-6.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Samsung gallaxy note 4</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$400.00</ins>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -255,6 +147,5 @@ include_once("inc/top.php");
 </div>
 
 <?php
-
 include_once("inc/footer.php");
 ?>

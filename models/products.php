@@ -55,6 +55,7 @@ class Product extends DB implements Iproduct
             echo $e;
         }
     }
+   
     function insert($payload, $src, $srcOfContent)
     {
         try {
