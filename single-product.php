@@ -45,13 +45,16 @@ if (isset($_GET['product_id'])) {
                         <a href=""><?php echo $cateSingle['name'] ?></a>
                         <a href=""><?php echo $productSingle['name'] ?></a>
                     </div>
-                    <?php $listImg = $product->getImg($productSingle['id']); ?>
+                    <?php $listImg = $product->getImg($productSingle['id']);
+                    ?>
+
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="product-images">
                                 <div class="product-main-img">
                                     <?php
-                                    $src = 'admin/product/uploads/' . $listImg[0]['img'];
+                                    $src = null;
+                                    if (count($listImg) != 0) $src = 'admin/product/uploads/' . $listImg[0]['img'];
                                     if (isset($_GET['img'])) {
                                         $src = 'admin/product/uploads/' . $_GET['img'];
                                         echo '<img height="800px" width="1000px" src="' . $src . '" alt="">';
@@ -75,7 +78,10 @@ if (isset($_GET['product_id'])) {
                             <div class="product-inner">
                                 <h2 class="product-name"><?php echo $productSingle['name'] ?></h2>
                                 <div class="product-inner-price">
-                                    <ins><?php echo number_format($productSingle['price']) . ' VND' ?></ins>
+                                    <!-- <ins><?php echo number_format($productSingle['price']) . ' VND' ?></ins> -->
+                                    <ins><?php $sellprice = $productSingle['price'] * (100 - $productSingle['discount']) / 100;
+                                            echo number_format($sellprice). ' VND' ?></ins>
+                                    <del><?php if ($sellprice != $productSingle['price']) echo number_format($productSingle['price']). ' VND' ?></del>
                                     <!-- <del>$100.00</del> -->
                                 </div>
 
@@ -94,7 +100,7 @@ if (isset($_GET['product_id'])) {
                                 <div role="tabpanel">
                                     <ul class="product-tab" role="tablist">
                                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Description</a></li>
-                                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Reviews</a></li>
+                                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Thông số kỹ thuật</a></li>
                                     </ul>
                                     <div class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade in active" id="home">
@@ -111,23 +117,70 @@ if (isset($_GET['product_id'])) {
                                             <?php } ?>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="profile">
-                                            <h2>Reviews</h2>
-                                            <div class="submit-review">
-                                                <p><label for="name">Name</label> <input name="name" type="text"></p>
-                                                <p><label for="email">Email</label> <input name="email" type="email"></p>
-                                                <div class="rating-chooser">
-                                                    <p>Your rating</p>
-                                                    <div class="rating-wrap-post">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                    </div>
-                                                </div>
-                                                <p><label for="review">Your review</label> <textarea name="review" id="" cols="30" rows="10"></textarea></p>
-                                                <p><input type="submit" value="Submit"></p>
-                                            </div>
+                                            <table class="table table-striped table-inverse table-responsive">
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td scope="row">Model</td>
+                                                        <td><?php echo $productSingle['model'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">CPU</td>
+                                                        <td><?php echo $productSingle['chip'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">VGA</td>
+                                                        <td><?php echo $productSingle['card'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Tình trạng máy</td>
+                                                        <td><?php if ($productSingle['status'] == 0) echo 'Máy mới';
+                                                            else echo 'Máy cũ' ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">RAM</td>
+                                                        <td><?php echo $productSingle['ram'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Ổ đĩa</td>
+                                                        <td><?php echo $productSingle['drive'] ?></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row">Màn hình</td>
+                                                        <td><?php echo $productSingle['display'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Kết nối</td>
+                                                        <td><?php echo $productSingle['connect'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Vân tay</td>
+                                                        <td><?php if ($productSingle['vantay'] == 0) echo 'Có';
+                                                            else echo 'Không' ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">HDH</td>
+                                                        <td><?php echo $productSingle['operation'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Pin</td>
+                                                        <td><?php echo $productSingle['pin'] . ' cell' ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Trọng lượng</td>
+                                                        <td><?php echo $productSingle['weight'] . ' kg' ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Kích thước</td>
+                                                        <td><?php echo $productSingle['size'] . ' cm' ?></td>
+                                                    </tr>
+                                                    <!-- <tr>
+                                                        <td scope="row">Đã bán</td>
+                                                        <td><?php echo $productSingle['selled'] ?></td>
+                                                    </tr> -->
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

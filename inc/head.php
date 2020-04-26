@@ -4,14 +4,8 @@ require_once('./models/cate.php');
 require_once('./models/products.php');
 require_once('./models/slider.php');
 session_start();
-// $brand = new Brand();
-// $cate = new Cate();
-// $product = new Product();
-// $slider = new Slider();
-
 
 ?>
-
 
 <!DOCTYPE html>
 <!--
@@ -25,7 +19,7 @@ session_start();
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ustora Demo</title>
+  <title>Laptopcu</title>
 
   <!-- Google Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
@@ -34,10 +28,8 @@ session_start();
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
-
   <!-- Font Awesome -->
   <link rel="stylesheet" href="css/font-awesome.min.css">
-
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/owl.carousel.css">
   <link rel="stylesheet" href="style.css">

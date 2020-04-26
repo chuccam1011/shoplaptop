@@ -19,25 +19,29 @@ $list = $product->getAll(0, 10);
                         ?>
                             <div class="single-product">
                                 <div class="product-f-image">
-                                    <img src="<?php echo 'admin/product/uploads/'.$listImg[0]['img']; ?>" alt="">
+                                    <img src="<?php echo 'admin/product/uploads/' . $listImg[0]['img']; ?>" alt="<?php echo $r['name'] ?>">
                                     <div class="product-hover">
-                                        <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        <a href="?add-to-cart=<?php echo $r['id'] ?>" 
+                                        class="add-to-cart-link"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                                         <!-- <a href="single-product.php" class="view-details-link"><i class="fa fa-link"></i> See details</a> -->
                                     </div>
                                 </div>
 
-                                <h2><a href="single-product.php"><?php echo $r['name'] ?></a></h2>
+                                <h2><a href="single-product.php?product_id=<?php echo $r['id'] ?>"><?php echo $r['name'] ?></a></h2>
 
                                 <div class="product-carousel-price">
-                                    <ins><?php echo $r['price'].' VND' ?></ins>
-                                    <!-- <del>$100.00</del> -->
+                                    <ins><?php $sellprice = $r['price'] * (100 - $r['discount']) / 100;
+                                            echo number_format($sellprice) ?></ins>
+                                    <del><?php if ($sellprice != $r['price']) echo number_format($r['price']) ?></del>
                                 </div>
                             </div>
                         <?php  } ?>
 
                     </div>
                 </div>
+                <?php include_once('inc/showProductByCate.php') ?>
             </div>
+
         </div>
     </div>
 </div>

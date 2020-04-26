@@ -25,7 +25,12 @@ class Cate extends DB implements Icate
         $stm->execute();
         return $stm->fetchAll();
     }
-
+    function getProductByCate($id)
+    {
+        $stm = $this->db->prepare("SELECT * FROM product WHERE cate_id= $id");
+        $stm->execute();
+        return $stm->fetchAll();
+    }
     function insert($payload)
     {
         try {
@@ -55,7 +60,7 @@ class Cate extends DB implements Icate
     {
         try {
             $cateName = $payload['name'];
-            $cateLevel= $payload['level'];
+            $cateLevel = $payload['level'];
             $id = $payload['id'];
             $stm = $this->db->prepare('UPDATE ' . self::tableName . ' 
             SET    name = :cateName, level = :cateLevel WHERE id = :id');

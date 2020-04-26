@@ -4,12 +4,13 @@ include_once("inc/top.php");
 ?>
 
 <?php
+// lay so trang der phan trang
 $products = new Product();
 $pdo = new DB();
 $pdo = $pdo->getPDO();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 try {
-    if (isset($_GET['page']) && is_numeric($_GET['page'])) {
+    if (isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) {
         $page = $_GET['page'];
     } else {
         $page = 1;
@@ -20,13 +21,21 @@ try {
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
+// 
+$cates = new Cate();
+if (isset($_GET['cate']) && is_numeric($_GET['cate'])) {
+    $id = $_GET['cate'];
+    $cate = $cates->getCateById($id);
+}
+$list = $cates->getProductByCate($id);
+
 ?>
 <div class="product-big-title-area">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="product-bit-title text-center">
-                    <h2>Tất cả sản phẩm </h2>
+                    <h2><?php echo $cate['name'] ?></h2>
                 </div>
             </div>
         </div>
@@ -52,8 +61,7 @@ try {
                             <del><?php if ($sellprice != $product['price']) echo number_format($product['price']).' VND' ?></del>
                         </div>
                         <div class="product-option-shop">
-                            <a class="add_to_cart_button" data-quantity="1"" rel="nofollow" 
-                            href="?add-to-cart=<?php echo $product['id'] ?>">Add to cart</a>
+                            <a class="add_to_cart_button" data-quantity="1"  rel="nofollow" href="?cate=<?php echo $id ?>&&add-to-cart=<?php echo $product['id'] ?>">Thêm vào giỏ</a>
                         </div>
                     </div>
                 </div>
@@ -64,6 +72,7 @@ try {
 
         <div class="row">
             <?php
+            //lau so bnả ghi 
             $row = $pdo->query('select count(*) as count from product');
             foreach ($row as $r) {
                 $allRows = $r['count'];
@@ -76,19 +85,19 @@ try {
                     <nav>
                         <ul class="pagination">
                             <li>
-                                <a href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                <a href="?cate=<?php echo $id ?>&&page=<?php echo $page - 1; ?>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
                             <?php for ($i = 1; $i <= $pageTotal; $i++) { ?>
-                                <li><a href="?page=<?php echo $i ?>">
+                                <li><a href="?cate=<?php echo $id ?>&&page=<?php echo $i ?>">
                                         <?php if ($i == $page) {
                                             echo '<b class="pagenum">' . $i . '</b>';
                                         } else echo $i;  ?> </a>
                                 </li>
                             <?php } ?>
                             <li>
-                                <a href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                <a href="?cate=<?php echo $id ?>&&page=<?php echo $page + 1; ?>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>

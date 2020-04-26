@@ -9,14 +9,7 @@
 <div class="single-sidebar">
     <h2 class="sidebar-title">Products New</h2>
     <ul>
-        <!-- 
-                    <div class="thubmnail-recent">
-                        <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$100.00</del>
-                        </div>
-                    </div> -->
+
         <?php
         //get product top new
         $listTopSell = $product->getTopNew(); // lay 5 sp trong DB
@@ -24,19 +17,14 @@
             $listImg = $product->getImg($r['id']);
         ?>
             <div class="single-wid-product">
-                <a href="single-product.php"><img src="<?php echo 'admin/product/uploads/' . $listImg[0]['img'] ?>" alt="" class="product-thumb"></a>
-                <h2><a href="single-product.php"><?php echo $r['name'] ?></a></h2>
-                <div class="product-wid-rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                </div>
+                <a href="single-product.php?product_id=<?php echo $r['id'] ?>"><img src="<?php echo 'admin/product/uploads/' . $listImg[0]['img'] ?>" alt="" class="product-thumb"></a>
+                <h2><a href="single-product.php?product_id=<?php echo $r['id'] ?>"><?php echo $r['name'] ?></a></h2>
+
                 <div class="product-wid-price">
-                    <ins><?php echo number_format($r['price']), ' VND' ?></ins>
-                    <ins><?php echo  $r['time_add'] ?></ins>
-                    <!-- <del>$425.00</del> -->
+                    <ins><?php $sellprice = $r['price'] * (100 - $r['discount']) / 100;
+                            echo number_format($sellprice) . ' VND' ?></ins>
+                    <del><?php if ($sellprice != $r['price']) echo number_format($r['price']) ?></del><br>
+                    <ins><?php echo  date("d/m/Y", strtotime($r['time_add'])); ?></ins>
                 </div>
             </div>
         <?php } ?>
@@ -53,19 +41,21 @@
             $listImg = $product->getImg($r['id']);
         ?>
             <div class="single-wid-product">
-                <a href="single-product.php"><img src="<?php echo 'admin/product/uploads/' . $listImg[0]['img'] ?>" alt="" class="product-thumb"></a>
-                <h2><a href="single-product.php"><?php echo $r['name'] ?></a></h2>
-                <div class="product-wid-rating">
+                <a href="single-product.php?product_id=<?php echo $r['id'] ?>"><img src="<?php echo 'admin/product/uploads/' . $listImg[0]['img'] ?>" alt="" class="product-thumb"></a>
+                <h2><a href="single-product.php?product_id=<?php echo $r['id'] ?>"><?php echo $r['name'] ?></a></h2>
+                <!-- <div class="product-wid-rating">
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>
-                </div>
+                </div> -->
                 <div class="product-wid-price">
-                    <ins><?php echo number_format($r['price']), ' VND' ?></ins>
-                    <ins><?php echo  $r['time_add'] ?></ins>
-                    <!-- <del>$425.00</del> -->
+                    <ins><?php $sellprice = $r['price'] * (100 - $r['discount']) / 100;
+                            echo number_format($sellprice) . ' VND' ?></ins>
+                    <del><?php if ($sellprice != $r['price']) echo number_format($r['price']) ?></del><br>
+                    <ins><?php echo  date("d/m/Y", strtotime($r['time_add'])); ?></ins>
+
                 </div>
             </div>
 

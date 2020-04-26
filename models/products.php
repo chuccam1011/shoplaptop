@@ -55,7 +55,7 @@ class Product extends DB implements Iproduct
             echo $e;
         }
     }
-   
+
     function insert($payload, $src, $srcOfContent)
     {
         try {
@@ -137,6 +137,7 @@ class Product extends DB implements Iproduct
         //tra ve so ban ghi
         return $stm->rowCount();
     }
+  
     public function getContentProduct($id)
     {
         $stm = $this->db->prepare("SELECT * FROM detail WHERE product_id=$id");

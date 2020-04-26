@@ -15,11 +15,11 @@ $list = $product->getAll(0, 10);
                     <img src="<?php echo 'admin/product/uploads/' . $listImg[0]['img'] ?>" alt="">
                     <div class="product-hover">
                         <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                        <a href="single-product.php?product_id=<?php echo $relatedProduct['id'] ?>" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                     </div>
                 </div>
 
-                <h2><a href=""><?php echo $relatedProduct['name'] ?></a></h2>
+                <h2><a href="single-product.php?product_id=<?php echo $relatedProduct['id'] ?>"><?php echo $relatedProduct['name'] ?></a></h2>
 
                 <div class="product-carousel-price">
                     <ins><?php

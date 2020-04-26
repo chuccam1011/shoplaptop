@@ -19,7 +19,7 @@ $list = $slider->getAllNoLimit();
 						<span class="primary">6 <strong><?php echo $r['tittle']?></strong></span>
 						</h2>
 						<!-- <h4 class="caption subtitle">Dual SIM</h4> -->
-						<a class="caption button-radius" href="#"><span class="icon"></span>Shop Now</a>
+						<a class="caption button-radius" href="single-product.php?product_id=<?php echo $r['id']?>"><span class="icon"></span>Shop Now</a>
 					</div>
 				</li>
 			<?php

@@ -15,8 +15,8 @@ include_once("inc/mainContent.php");
 <?php
 include_once("inc/brand.php");
 ?>
-
 <!-- End brands area -->
+
 <?php
 include_once("inc/widget.php");
 ?>

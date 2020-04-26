@@ -83,7 +83,7 @@ try {
                         <td><?php echo $r['price'] ?></td>
                         <td><?php echo $r['short_desc'] ?></td>
                         <td><?php echo $r['chip'] ?></td>
-                        <td><?php echo $r['ram'] . ' GB' ?></td>
+                        <td><?php echo $r['ram']  ?></td>
                         <td><?php echo $r['card'] ?></td>
                         <td>
                             <a class="btn btn-danger" href="?action=delete&id=<?php echo $r['id']; ?>">Xoá</a>
