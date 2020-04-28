@@ -4,6 +4,7 @@ include_once("inc/top.php");
 ?>
 
 <?php
+// hient trên tràng này
 // lay so trang der phan trang
 $products = new Product();
 $pdo = new DB();
@@ -52,28 +53,28 @@ $list = $cates->getProductByCate($id);
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">
                         <div class="product-upper">
-                            <img height="300px" width="400px" src="<?php echo 'admin/product/uploads/' . $listImg[1]['img'] ?>" alt="<?php echo $product['name'] ?>">
+                            <img height="250px" width="300px" src="<?php echo 'admin/product/uploads/' . $listImg[1]['img'] ?>" alt="<?php echo $product['name'] ?>">
                         </div>
                         <h2><a href="single-product.php?product_id=<?php echo $product['id']; ?>"><?php echo $product['name'] ?></a></h2>
                         <div class="product-carousel-price">
                             <ins><?php $sellprice = $product['price'] * (100 - $product['discount']) / 100;
-                                    echo number_format($sellprice).' VND' ?></ins>
-                            <del><?php if ($sellprice != $product['price']) echo number_format($product['price']).' VND' ?></del>
+                                    echo number_format($sellprice) . ' VND' ?></ins>
+                            <del><?php if ($sellprice != $product['price']) echo number_format($product['price']) . ' VND' ?></del>
                         </div>
                         <div class="product-option-shop">
-                            <a class="add_to_cart_button" data-quantity="1"  rel="nofollow" href="?cate=<?php echo $id ?>&&add-to-cart=<?php echo $product['id'] ?>">Thêm vào giỏ</a>
+                            <a class="add_to_cart_button" data-quantity="1" rel="nofollow" href="?cate=<?php echo $id ?>&&add-to-cart=<?php echo $product['id'] ?>">Thêm vào giỏ</a>
                         </div>
                     </div>
                 </div>
 
             <?php  } ?>
-
         </div>
 
         <div class="row">
             <?php
             //lau so bnả ghi 
-            $row = $pdo->query('select count(*) as count from product');
+            $id = $_GET['cate'];
+            $row = $pdo->query("select count(*) as count from product WHERE cate_id=$id");
             foreach ($row as $r) {
                 $allRows = $r['count'];
             }

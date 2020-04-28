@@ -14,8 +14,8 @@ $list = $product->getAll(0, 10);
                 <div class="product-f-image">
                     <img src="<?php echo 'admin/product/uploads/' . $listImg[0]['img'] ?>" alt="">
                     <div class="product-hover">
-                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                        <a href="single-product.php?product_id=<?php echo $relatedProduct['id'] ?>" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                        <a href="single-product.php?product_id=<?php echo $relatedProduct['id'] ?>&&add-to-cart=<?php echo $relatedProduct['id']?>" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
+                        <a href="single-product.php?product_id=<?php echo $relatedProduct['id'] ?>" class="view-details-link"><i class="fa fa-link"></i>Xem Chi Tiết</a>
                     </div>
                 </div>
 

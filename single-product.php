@@ -85,11 +85,11 @@ if (isset($_GET['product_id'])) {
                                     <!-- <del>$100.00</del> -->
                                 </div>
 
-                                <form action="" class="cart">
+                                <form action="" method="post" class="cart">
                                     <div class="quantity">
                                         <input type="number" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
                                     </div>
-                                    <button class="add_to_cart_button" type="submit">Add to cart</button>
+                                    <button class="add_to_cart_button" name="add_to_cart" type="submit">Thêm vào giỏ</button>
                                 </form>
 
                                 <div class="product-inner-category">
@@ -99,7 +99,7 @@ if (isset($_GET['product_id'])) {
 
                                 <div role="tabpanel">
                                     <ul class="product-tab" role="tablist">
-                                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Description</a></li>
+                                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Chi Tiết</a></li>
                                         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Thông số kỹ thuật</a></li>
                                     </ul>
                                     <div class="tab-content">

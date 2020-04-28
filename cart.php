@@ -1,465 +1,235 @@
-<?php
-include_once("inc/head.php");
-include_once("inc/top.php");
-?>
-<div class="product-big-title-area ">
-    <div class="container ">
-        <div class="row ">
-            <div class="col-md-12 ">
-                <div class="product-bit-title text-center ">
-                    <h2>Shopping Cart</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Page title area -->
+  <?php
+    include_once("inc/head.php");
+    include_once("inc/top.php");
+    ?>
+
+  <?php
+    $product = new Product();
+    $cart = $_SESSION['cart'];
+
+    //nếu tồn tại get delete
+    if (isset($_GET['delete'])) {
+        $id = $_GET['id'];
+        if (isset($_SESSION['cart'])) {
+            //tìm kiếm phần tử theo id trong mảng
+            for ($i = 0; $i < count($cart); $i++) {
+                if ($id == $cart[$i]['id']) {
+                    //xoa phan tu tai vi tri i
+                    array_splice($cart, $i, 1);
+                    break;
+                }
+            }
+            //gán nguợc lại mảng vào session
+            $_SESSION['cart'] = $cart;
+        }
+    }
+
+    if (isset($_GET['plus'])) {
+        $id = $_GET['id'];
+
+        for ($i = 0; $i < count($cart); $i++) {
+            if ($id == $cart[$i]['id']) {
+                //cập nhật tăng số luợng lên
+                $cart[$i]['quantity'] = $cart[$i]['quantity'] + 1;
+                break;
+            }
+        }
+        $_SESSION['cart'] = $cart;
+    }
+    //nếu như nguơi dùng gửi thông tin giam số luợng sp
+    if (isset($_GET['minus'])) {
+        $id = $_GET['id'];
+        for ($i = 0; $i < count($cart); $i++) {
+            if ($id == $cart[$i]['id']) {
+                //giảm số luợng đi
+                if ($cart[$i]['quantity'] >= 2) {
+                    $cart[$i]['quantity'] = $cart[$i]['quantity'] - 1;
+                }
+                break;
+            }
+        }
+
+        $_SESSION['cart'] = $cart;
+    }
+    // update quantity for item 
+    if (isset($_POST['update_cart'])) {
+        // var_dump($_POST);
+        //tìm kiếm phần tử theo id trong mảng
+        for ($i = 0; $i < count($cart); $i++) {
+            $id = $_POST['id'][$i];
+            //    echo $id;
+            if ($id == $cart[$i]['id']) {
+                //giảm số luợng đi
+                $cart[$i]['quantity'] = $_POST['quantity'][$i];
+                //  break;
+            }
+        }
+        $_SESSION['cart'] = $cart;
+    }
+    ?>
 
 
-<div class="single-product-area ">
-    <div class="zigzag-bottom "></div>
-    <div class="container ">
-        <div class="row ">
-            <div class="col-md-4 ">
-                <div class="single-sidebar ">
-                    <h2 class="sidebar-title ">Search Products</h2>
-                    <form action="# ">
-                        <input type="text " placeholder="Search products... ">
-                        <input type="submit " value="Search ">
-                    </form>
-                </div>
 
-                <div class="single-sidebar ">
-                    <h2 class="sidebar-title ">Products</h2>
-                    <div class="thubmnail-recent ">
-                        <img src="img/product-thumb-1.jpg " class="recent-thumb " alt=" ">
-                        <h2><a href="single-product.php ">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price ">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent ">
-                        <img src="img/product-thumb-1.jpg " class="recent-thumb " alt=" ">
-                        <h2><a href="single-product.php ">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price ">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent ">
-                        <img src="img/product-thumb-1.jpg " class="recent-thumb " alt=" ">
-                        <h2><a href="single-product.php ">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price ">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent ">
-                        <img src="img/product-thumb-1.jpg " class="recent-thumb " alt=" ">
-                        <h2><a href="single-product.php ">Sony Smart TV - 2015</a></h2>
-                        <div class="product-sidebar-price ">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="single-sidebar ">
-                    <h2 class="sidebar-title ">Recent Posts</h2>
-                    <ul>
-                        <li><a href="# ">Sony Smart TV - 2015</a></li>
-                        <li><a href="# ">Sony Smart TV - 2015</a></li>
-                        <li><a href="# ">Sony Smart TV - 2015</a></li>
-                        <li><a href="# ">Sony Smart TV - 2015</a></li>
-                        <li><a href="# ">Sony Smart TV - 2015</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-8 ">
-                <div class="product-content-right ">
-                    <div class="woocommerce ">
-                        <form method="post " action="# ">
-                            <table cellspacing="0 " class="shop_table cart ">
-                                <thead>
-                                    <tr>
-                                        <th class="product-remove ">&nbsp;</th>
-                                        <th class="product-thumbnail ">&nbsp;</th>
-                                        <th class="product-name ">Product</th>
-                                        <th class="product-price ">Price</th>
-                                        <th class="product-quantity ">Quantity</th>
-                                        <th class="product-subtotal ">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="cart_item ">
-                                        <td class="product-remove ">
-                                            <a title="Remove this item " class="remove " href="# ">×</a>
-                                        </td>
-
-                                        <td class="product-thumbnail ">
-                                            <a href="single-product.php "><img width="145 " height="145 " alt="poster_1_up " class="shop_thumbnail " src="img/product-thumb-2.jpg "></a>
-                                        </td>
-
-                                        <td class="product-name ">
-                                            <a href="single-product.php ">Ship Your Idea</a>
-                                        </td>
-
-                                        <td class="product-price ">
-                                            <span class="amount ">£15.00</span>
-                                        </td>
-
-                                        <td class="product-quantity ">
-                                            <div class="quantity buttons_added ">
-                                                <input type="button " class="minus " value="- ">
-                                                <input type="number " size="4 " class="input-text qty text " title="Qty " value="1 " min="0 " step="1 ">
-                                                <input type="button " class="plus " value="+ ">
-                                            </div>
-                                        </td>
-
-                                        <td class="product-subtotal ">
-                                            <span class="amount ">£15.00</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="actions " colspan="6 ">
-                                            <div class="coupon ">
-                                                <label for="coupon_code ">Coupon:</label>
-                                                <input type="text " placeholder="Coupon code " value=" " id="coupon_code " class="input-text " name="coupon_code ">
-                                                <input type="submit " value="Apply Coupon " name="apply_coupon " class="button ">
-                                            </div>
-                                            <input type="submit " value="Update Cart " name="update_cart " class="button ">
-                                            <input type="submit " value="Checkout " name="proceed " class="checkout-button button alt wc-forward ">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-
-                        <div class="cart-collaterals ">
+  <div class="product-big-title-area ">
+      <div class="container ">
+          <div class="row ">
+              <div class="col-md-12 ">
+                  <div class="product-bit-title text-center ">
+                      <h2>Giỏ Hàng</h2>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- End Page title area -->
 
 
-                            <div class="cross-sells ">
-                                <h2>You may be interested in...</h2>
-                                <ul class="products ">
-                                    <li class="product ">
-                                        <a href="single-product.php ">
-                                            <img width="325 " height="325 " alt="T_4_front " class="attachment-shop_catalog wp-post-image " src="img/product-2.jpg ">
-                                            <h3>Ship Your Idea</h3>
-                                            <span class="price "><span class="amount ">£20.00</span></span>
-                                        </a>
+  <div class="single-product-area ">
+      <div class="zigzag-bottom "></div>
+      <div class="container ">
+          <div class="row ">
+              <div class="col-md-4 ">
+                  <?php include_once('inc/singleSlidebar.php'); ?>
+              </div>
 
-                                        <a class="add_to_cart_button " data-quantity="1 " data-product_sku=" " data-product_id="22 " rel="nofollow " href="single-product.php ">Select options</a>
-                                    </li>
+              <div class="col-md-8 ">
+                  <div class="product-content-right ">
+                      <div class="woocommerce ">
+                          <form method="post" action="">
+                              <table cellspacing="0 " class="shop_table cart">
+                                  <thead>
+                                      <tr>
+                                          <th class="product-remove">&nbsp;</th>
+                                          <th class="product-thumbnail ">&nbsp;Hình ảnh</th>
+                                          <th class="product-name ">Tên Sản phẩm </th>
+                                          <th class="product-price ">Đơn giá</th>
+                                          <th class="product-quantity ">Số lượng</th>
+                                          <th class="product-subtotal ">Giá</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <?php for ($i = 0; $i < count($cart); $i++) {
+                                            $listImg = $product->getImg($cart[$i]['id']);
+                                        ?>
+                                          <tr class="cart_item ">
+                                              <td class="product-remove">
+                                                  <a title="Xóa sản phẩm này" class="remove" href="?delete&&id=<?php echo $cart[$i]['id'] ?>">×</a>
+                                              </td>
 
-                                    <li class="product ">
-                                        <a href="single-product.php ">
-                                            <img width="325 " height="325 " alt="T_4_front " class="attachment-shop_catalog wp-post-image " src="img/product-4.jpg ">
-                                            <h3>Ship Your Idea</h3>
-                                            <span class="price "><span class="amount ">£20.00</span></span>
-                                        </a>
+                                              <td class="product-thumbnail">
+                                                  <a href="single-product.php?product_id=<?php echo $cart[$i]['id'] ?>"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="<?php echo 'admin/product/uploads/' . $listImg[0]['img'] ?>"></a>
+                                              </td>
 
-                                        <a class="add_to_cart_button " data-quantity="1 " data-product_sku=" " data-product_id="22 " rel="nofollow " href="single-product.php ">Select options</a>
-                                    </li>
-                                </ul>
-                            </div>
+                                              <td class="product-name">
+                                                  <a href="single-product.php?product_id=<?php echo $cart[$i]['id'] ?>"><?php echo $cart[$i]['name']; ?></a>
+                                              </td>
 
+                                              <td class="product-price ">
+                                                  <span class="amount"><?php echo number_format($cart[$i]['price']) . ' VND'; ?></span>
+                                              </td>
 
-                            <div class="cart_totals ">
-                                <h2>Cart Totals</h2>
+                                              <td class="product-quantity">
+                                                  <div class="quantity buttons_added">
+                                                      <a href="?minus&&id=<?php echo $cart[$i]['id'] ?>"><input type="button" class="minus" value="-"></a>
+                                                      <input name="quantity[]" type="number" size="4" class="input-text qty text" title="Qty" value="<?php echo $cart[$i]['quantity'] ?>" min="0" step="1">
+                                                      <input type="hidden" name="id[]" value="<?php echo $cart[$i]['id'] ?>">
+                                                      <a href="?plus&&id=<?php echo $cart[$i]['id'] ?>"><input type="button" class="plus" value="+"></a>
+                                                  </div>
+                                              </td>
 
-                                <table cellspacing="0 ">
-                                    <tbody>
-                                        <tr class="cart-subtotal ">
-                                            <th>Cart Subtotal</th>
-                                            <td><span class="amount ">£15.00</span></td>
-                                        </tr>
+                                              <td class="product-subtotal">
+                                                  <span class="amount"><?php echo number_format($cart[$i]['price'] * $cart[$i]['quantity']) . ' VND' ?></span>
+                                              </td>
+                                          </tr>
+                                      <?php } ?>
+                                      <tr>
+                                          <td class="actions" colspan="6">
+                                              <div class="coupon">
+                                                  <label for="coupon_code">Coupon:</label>
+                                                  <input type="text" placeholder="Coupon code " value="" id="coupon_code" class="input-text" name="coupon_code">
+                                                  <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
+                                              </div>
+                                              <input type="submit" value="Update Cart" name="update_cart" class="button">
+                                              <input type="submit" value="CheckOut" name="check_out" class="button">
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </form>
 
-                                        <tr class="shipping ">
-                                            <th>Shipping and Handling</th>
-                                            <td>Free Shipping</td>
-                                        </tr>
+                          <div class="cart-collaterals ">
+                              <div class="cross-sells ">
+                                  <h2>You may be interested in...</h2>
+                                  <ul class="products ">
+                                      <li class="product ">
+                                          <a href="single-product.php ">
+                                              <img width="325" height="325" alt="T_4_front " class="attachment-shop_catalog wp-post-image " src="img/product-2.jpg ">
+                                              <h3>Ship Your Idea</h3>
+                                              <span class="price "><span class="amount">£20.00</span></span>
+                                          </a>
 
-                                        <tr class="order-total ">
-                                            <th>Order Total</th>
-                                            <td><strong><span class="amount ">£15.00</span></strong> </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                          <a class="add_to_cart_button " data-quantity="1 " data-product_sku=" " data-product_id="22 " rel="nofollow " href="single-product.php ">Select options</a>
+                                      </li>
 
+                                      <li class="product ">
+                                          <a href="single-product.php ">
+                                              <img width="325 " height="325 " alt="T_4_front " class="attachment-shop_catalog wp-post-image " src="img/product-4.jpg ">
+                                              <h3>Ship Your Idea</h3>
+                                              <span class="price "><span class="amount">£20.00</span></span>
+                                          </a>
 
-                            <form method="post " action="# " class="shipping_calculator ">
-                                <h2><a class="shipping-calculator-button " data-toggle="collapse " href="#calcalute-shipping-wrap " aria-expanded="false " aria-controls="calcalute-shipping-wrap ">Calculate Shipping</a></h2>
-
-                                <section id="calcalute-shipping-wrap " class="shipping-calculator-form collapse ">
-
-                                    <p class="form-row form-row-wide ">
-                                        <select rel="calc_shipping_state " class="country_to_state " id="calc_shipping_country " name="calc_shipping_country ">
-                                            <option value=" ">Select a country…</option>
-                                            <option value="AX ">Åland Islands</option>
-                                            <option value="AF ">Afghanistan</option>
-                                            <option value="AL ">Albania</option>
-                                            <option value="DZ ">Algeria</option>
-                                            <option value="AD ">Andorra</option>
-                                            <option value="AO ">Angola</option>
-                                            <option value="AI ">Anguilla</option>
-                                            <option value="AQ ">Antarctica</option>
-                                            <option value="AG ">Antigua and Barbuda</option>
-                                            <option value="AR ">Argentina</option>
-                                            <option value="AM ">Armenia</option>
-                                            <option value="AW ">Aruba</option>
-                                            <option value="AU ">Australia</option>
-                                            <option value="AT ">Austria</option>
-                                            <option value="AZ ">Azerbaijan</option>
-                                            <option value="BS ">Bahamas</option>
-                                            <option value="BH ">Bahrain</option>
-                                            <option value="BD ">Bangladesh</option>
-                                            <option value="BB ">Barbados</option>
-                                            <option value="BY ">Belarus</option>
-                                            <option value="PW ">Belau</option>
-                                            <option value="BE ">Belgium</option>
-                                            <option value="BZ ">Belize</option>
-                                            <option value="BJ ">Benin</option>
-                                            <option value="BM ">Bermuda</option>
-                                            <option value="BT ">Bhutan</option>
-                                            <option value="BO ">Bolivia</option>
-                                            <option value="BQ ">Bonaire, Saint Eustatius and Saba</option>
-                                            <option value="BA ">Bosnia and Herzegovina</option>
-                                            <option value="BW ">Botswana</option>
-                                            <option value="BV ">Bouvet Island</option>
-                                            <option value="BR ">Brazil</option>
-                                            <option value="IO ">British Indian Ocean Territory</option>
-                                            <option value="VG ">British Virgin Islands</option>
-                                            <option value="BN ">Brunei</option>
-                                            <option value="BG ">Bulgaria</option>
-                                            <option value="BF ">Burkina Faso</option>
-                                            <option value="BI ">Burundi</option>
-                                            <option value="KH ">Cambodia</option>
-                                            <option value="CM ">Cameroon</option>
-                                            <option value="CA ">Canada</option>
-                                            <option value="CV ">Cape Verde</option>
-                                            <option value="KY ">Cayman Islands</option>
-                                            <option value="CF ">Central African Republic</option>
-                                            <option value="TD ">Chad</option>
-                                            <option value="CL ">Chile</option>
-                                            <option value="CN ">China</option>
-                                            <option value="CX ">Christmas Island</option>
-                                            <option value="CC ">Cocos (Keeling) Islands</option>
-                                            <option value="CO ">Colombia</option>
-                                            <option value="KM ">Comoros</option>
-                                            <option value="CG ">Congo (Brazzaville)</option>
-                                            <option value="CD ">Congo (Kinshasa)</option>
-                                            <option value="CK ">Cook Islands</option>
-                                            <option value="CR ">Costa Rica</option>
-                                            <option value="HR ">Croatia</option>
-                                            <option value="CU ">Cuba</option>
-                                            <option value="CW ">CuraÇao</option>
-                                            <option value="CY ">Cyprus</option>
-                                            <option value="CZ ">Czech Republic</option>
-                                            <option value="DK ">Denmark</option>
-                                            <option value="DJ ">Djibouti</option>
-                                            <option value="DM ">Dominica</option>
-                                            <option value="DO ">Dominican Republic</option>
-                                            <option value="EC ">Ecuador</option>
-                                            <option value="EG ">Egypt</option>
-                                            <option value="SV ">El Salvador</option>
-                                            <option value="GQ ">Equatorial Guinea</option>
-                                            <option value="ER ">Eritrea</option>
-                                            <option value="EE ">Estonia</option>
-                                            <option value="ET ">Ethiopia</option>
-                                            <option value="FK ">Falkland Islands</option>
-                                            <option value="FO ">Faroe Islands</option>
-                                            <option value="FJ ">Fiji</option>
-                                            <option value="FI ">Finland</option>
-                                            <option value="FR ">France</option>
-                                            <option value="GF ">French Guiana</option>
-                                            <option value="PF ">French Polynesia</option>
-                                            <option value="TF ">French Southern Territories</option>
-                                            <option value="GA ">Gabon</option>
-                                            <option value="GM ">Gambia</option>
-                                            <option value="GE ">Georgia</option>
-                                            <option value="DE ">Germany</option>
-                                            <option value="GH ">Ghana</option>
-                                            <option value="GI ">Gibraltar</option>
-                                            <option value="GR ">Greece</option>
-                                            <option value="GL ">Greenland</option>
-                                            <option value="GD ">Grenada</option>
-                                            <option value="GP ">Guadeloupe</option>
-                                            <option value="GT ">Guatemala</option>
-                                            <option value="GG ">Guernsey</option>
-                                            <option value="GN ">Guinea</option>
-                                            <option value="GW ">Guinea-Bissau</option>
-                                            <option value="GY ">Guyana</option>
-                                            <option value="HT ">Haiti</option>
-                                            <option value="HM ">Heard Island and McDonald Islands</option>
-                                            <option value="HN ">Honduras</option>
-                                            <option value="HK ">Hong Kong</option>
-                                            <option value="HU ">Hungary</option>
-                                            <option value="IS ">Iceland</option>
-                                            <option value="IN ">India</option>
-                                            <option value="ID ">Indonesia</option>
-                                            <option value="IR ">Iran</option>
-                                            <option value="IQ ">Iraq</option>
-                                            <option value="IM ">Isle of Man</option>
-                                            <option value="IL ">Israel</option>
-                                            <option value="IT ">Italy</option>
-                                            <option value="CI ">Ivory Coast</option>
-                                            <option value="JM ">Jamaica</option>
-                                            <option value="JP ">Japan</option>
-                                            <option value="JE ">Jersey</option>
-                                            <option value="JO ">Jordan</option>
-                                            <option value="KZ ">Kazakhstan</option>
-                                            <option value="KE ">Kenya</option>
-                                            <option value="KI ">Kiribati</option>
-                                            <option value="KW ">Kuwait</option>
-                                            <option value="KG ">Kyrgyzstan</option>
-                                            <option value="LA ">Laos</option>
-                                            <option value="LV ">Latvia</option>
-                                            <option value="LB ">Lebanon</option>
-                                            <option value="LS ">Lesotho</option>
-                                            <option value="LR ">Liberia</option>
-                                            <option value="LY ">Libya</option>
-                                            <option value="LI ">Liechtenstein</option>
-                                            <option value="LT ">Lithuania</option>
-                                            <option value="LU ">Luxembourg</option>
-                                            <option value="MO ">Macao S.A.R., China</option>
-                                            <option value="MK ">Macedonia</option>
-                                            <option value="MG ">Madagascar</option>
-                                            <option value="MW ">Malawi</option>
-                                            <option value="MY ">Malaysia</option>
-                                            <option value="MV ">Maldives</option>
-                                            <option value="ML ">Mali</option>
-                                            <option value="MT ">Malta</option>
-                                            <option value="MH ">Marshall Islands</option>
-                                            <option value="MQ ">Martinique</option>
-                                            <option value="MR ">Mauritania</option>
-                                            <option value="MU ">Mauritius</option>
-                                            <option value="YT ">Mayotte</option>
-                                            <option value="MX ">Mexico</option>
-                                            <option value="FM ">Micronesia</option>
-                                            <option value="MD ">Moldova</option>
-                                            <option value="MC ">Monaco</option>
-                                            <option value="MN ">Mongolia</option>
-                                            <option value="ME ">Montenegro</option>
-                                            <option value="MS ">Montserrat</option>
-                                            <option value="MA ">Morocco</option>
-                                            <option value="MZ ">Mozambique</option>
-                                            <option value="MM ">Myanmar</option>
-                                            <option value="NA ">Namibia</option>
-                                            <option value="NR ">Nauru</option>
-                                            <option value="NP ">Nepal</option>
-                                            <option value="NL ">Netherlands</option>
-                                            <option value="AN ">Netherlands Antilles</option>
-                                            <option value="NC ">New Caledonia</option>
-                                            <option value="NZ ">New Zealand</option>
-                                            <option value="NI ">Nicaragua</option>
-                                            <option value="NE ">Niger</option>
-                                            <option value="NG ">Nigeria</option>
-                                            <option value="NU ">Niue</option>
-                                            <option value="NF ">Norfolk Island</option>
-                                            <option value="KP ">North Korea</option>
-                                            <option value="NO ">Norway</option>
-                                            <option value="OM ">Oman</option>
-                                            <option value="PK ">Pakistan</option>
-                                            <option value="PS ">Palestinian Territory</option>
-                                            <option value="PA ">Panama</option>
-                                            <option value="PG ">Papua New Guinea</option>
-                                            <option value="PY ">Paraguay</option>
-                                            <option value="PE ">Peru</option>
-                                            <option value="PH ">Philippines</option>
-                                            <option value="PN ">Pitcairn</option>
-                                            <option value="PL ">Poland</option>
-                                            <option value="PT ">Portugal</option>
-                                            <option value="QA ">Qatar</option>
-                                            <option value="IE ">Republic of Ireland</option>
-                                            <option value="RE ">Reunion</option>
-                                            <option value="RO ">Romania</option>
-                                            <option value="RU ">Russia</option>
-                                            <option value="RW ">Rwanda</option>
-                                            <option value="ST ">São Tomé and Príncipe</option>
-                                            <option value="BL ">Saint Barthélemy</option>
-                                            <option value="SH ">Saint Helena</option>
-                                            <option value="KN ">Saint Kitts and Nevis</option>
-                                            <option value="LC ">Saint Lucia</option>
-                                            <option value="SX ">Saint Martin (Dutch part)</option>
-                                            <option value="MF ">Saint Martin (French part)</option>
-                                            <option value="PM ">Saint Pierre and Miquelon</option>
-                                            <option value="VC ">Saint Vincent and the Grenadines</option>
-                                            <option value="SM ">San Marino</option>
-                                            <option value="SA ">Saudi Arabia</option>
-                                            <option value="SN ">Senegal</option>
-                                            <option value="RS ">Serbia</option>
-                                            <option value="SC ">Seychelles</option>
-                                            <option value="SL ">Sierra Leone</option>
-                                            <option value="SG ">Singapore</option>
-                                            <option value="SK ">Slovakia</option>
-                                            <option value="SI ">Slovenia</option>
-                                            <option value="SB ">Solomon Islands</option>
-                                            <option value="SO ">Somalia</option>
-                                            <option value="ZA ">South Africa</option>
-                                            <option value="GS ">South Georgia/Sandwich Islands</option>
-                                            <option value="KR ">South Korea</option>
-                                            <option value="SS ">South Sudan</option>
-                                            <option value="ES ">Spain</option>
-                                            <option value="LK ">Sri Lanka</option>
-                                            <option value="SD ">Sudan</option>
-                                            <option value="SR ">Suriname</option>
-                                            <option value="SJ ">Svalbard and Jan Mayen</option>
-                                            <option value="SZ ">Swaziland</option>
-                                            <option value="SE ">Sweden</option>
-                                            <option value="CH ">Switzerland</option>
-                                            <option value="SY ">Syria</option>
-                                            <option value="TW ">Taiwan</option>
-                                            <option value="TJ ">Tajikistan</option>
-                                            <option value="TZ ">Tanzania</option>
-                                            <option value="TH ">Thailand</option>
-                                            <option value="TL ">Timor-Leste</option>
-                                            <option value="TG ">Togo</option>
-                                            <option value="TK ">Tokelau</option>
-                                            <option value="TO ">Tonga</option>
-                                            <option value="TT ">Trinidad and Tobago</option>
-                                            <option value="TN ">Tunisia</option>
-                                            <option value="TR ">Turkey</option>
-                                            <option value="TM ">Turkmenistan</option>
-                                            <option value="TC ">Turks and Caicos Islands</option>
-                                            <option value="TV ">Tuvalu</option>
-                                            <option value="UG ">Uganda</option>
-                                            <option value="UA ">Ukraine</option>
-                                            <option value="AE ">United Arab Emirates</option>
-                                            <option selected="selected " value="GB ">United Kingdom (UK)</option>
-                                            <option value="US ">United States (US)</option>
-                                            <option value="UY ">Uruguay</option>
-                                            <option value="UZ ">Uzbekistan</option>
-                                            <option value="VU ">Vanuatu</option>
-                                            <option value="VA ">Vatican</option>
-                                            <option value="VE ">Venezuela</option>
-                                            <option value="VN ">Vietnam</option>
-                                            <option value="WF ">Wallis and Futuna</option>
-                                            <option value="EH ">Western Sahara</option>
-                                            <option value="WS ">Western Samoa</option>
-                                            <option value="YE ">Yemen</option>
-                                            <option value="ZM ">Zambia</option>
-                                            <option value="ZW ">Zimbabwe</option>
-                                        </select>
-                                    </p>
-
-                                    <p class="form-row form-row-wide "><input type="text " id="calc_shipping_state " name="calc_shipping_state " placeholder="State / county " value=" " class="input-text "> </p>
-
-                                    <p class="form-row form-row-wide "><input type="text " id="calc_shipping_postcode " name="calc_shipping_postcode " placeholder="Postcode / Zip " value=" " class="input-text "></p>
+                                          <a class="add_to_cart_button " data-quantity="1 " data-product_sku=" " data-product_id="22 " rel="nofollow " href="single-product.php ">Select options</a>
+                                      </li>
+                                  </ul>
+                              </div>
 
 
-                                    <p><button class="button " value="1 " name="calc_shipping " type="submit ">Update Totals</button></p>
+                              <div class="cart_totals">
+                                  <h2>Giỏ Hàng</h2>
 
-                                </section>
-                            </form>
+                                  <table cellspacing="0">
+                                      <tbody>
+                                          <tr class="cart-subtotal">
+                                              <th>Tổng thanh toán </th>
+                                              <td><span class="amount"><?php echo number_format($total) . ' VND'; ?></span></td>
+                                          </tr>
+
+                                          <tr class="shipping">
+                                              <?php $ship = 120000; ?>
+                                              <th>Shipping</th>
+                                              <td><?php echo number_format($ship) . ' VND' ?></td>
+                                          </tr>
+                                          <tr class="order-total ">
+                                              <th>Order Total</th>
+                                              <td><strong><span class="amount"><?php echo number_format($total + $ship) . ' VND' ?></span></strong> </td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
 
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                              <form method="post" action="" class="shipping_calculator">
+                                  <h2>
+                                      <a class="shipping-calculator-button" data-toggle="collapse" href=""" aria-expanded=" false" aria-controls="calcalute-shipping-wrap ">Tính phí ship</a></h2>
 
-<?php
-include_once("inc/footer.php");
-?>
+                                  <select rel="calc_shipping_state" class="country_to_state" id="calc_shipping_countr" name="calc_shipping_country ">
+                                      <option value=" ">Chọn thành phố...</option>
+                                      <option value="HN">Hà nội</option>
+                                      <option value="HCM">Hồ chí minh</option>
+                                      <option value="DN">Đà nẵng</option>
+                                  </select>
+                                  <button class="button" value="1" name="calc_shipping" type="submit">Update Totals</button>
+                                  </section>
+                              </form>
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <?php
+    include_once("inc/footer.php");
+    ?>

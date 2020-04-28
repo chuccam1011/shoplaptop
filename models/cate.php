@@ -27,7 +27,7 @@ class Cate extends DB implements Icate
     }
     function getProductByCate($id)
     {
-        $stm = $this->db->prepare("SELECT * FROM product WHERE cate_id= $id");
+        $stm = $this->db->prepare("SELECT * FROM product WHERE cate_id= $id LIMIT 10");
         $stm->execute();
         return $stm->fetchAll();
     }

@@ -49,6 +49,7 @@ try {
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Hình ảnh</th>
                     <th scope="col">Tên</th>
                     <th scope="col">Thương hiệu</th>
                     <th scope="col">Thể loại</th>
@@ -67,9 +68,11 @@ try {
             <tbody>
                 <?php
                 foreach ($list as $r) {
+                    $listImg = $products->getImg($r['id']);
                 ?>
                     <tr>
                         <td><?php echo $r['id'] ?></td>
+                        <td><img height="50px" width="50px" src="<?php echo 'uploads/' . $listImg[0]['img'] ?>" alt=""></td>
                         <td><?php echo $r['name'] ?></td>
                         <?php
                         $obj = $brand->getBrandById($r['brand_id']);
