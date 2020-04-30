@@ -58,7 +58,8 @@ foreach ($cart as $item) {
             <div class="row">
                 <div class="col-md-8">
                     <div class="user-menu">
-                        <ul>
+                        <ul>    
+                            <li><img height="20px" width="20px" src="" alt=""><?php echo 'Xin Chào!  '.$_SESSION['username'] ?></li>
                             <li><a href="#"><i class="fa fa-user"></i>Tài khoản của tôi </a></li>
                             <li><a href="#"><i class="fa fa-heart"></i> Yêu thích</a></li>
                             <li><a href="cart.php"><i class="fa fa-user"></i>Giỏ Hàng</a></li>

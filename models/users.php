@@ -1,5 +1,5 @@
 <?php
-require_once('./../../db.php');
+require_once('C:/xampp/htdocs/Laptopcu/db.php');
 require_once('imodel.php');
 class Users extends DB implements IModel
 {
@@ -20,27 +20,34 @@ class Users extends DB implements IModel
     function insert($payload)
     {
         try {
+
             $username = $payload['username'];
             $address = $payload['address'];
             $phone = $payload['phone'];
             $city = $payload['city'];
             $password = $payload['password'];
+            $passwordR = $payload['passwordR'];
             $full_name = $payload['full_name'];
             $dob = $payload['dob'];
             $email = $payload['email'];
-            $stm = $this->db->prepare('INSERT INTO ' .
-                self::tableName . '(username,address,phone,password,email,city,full_name,dob)
-             VALUES(:username,:address,:phone,:password,:email)');
-            $stm->execute(array(
-                ':username' => $username,
-                ':address' => $address,
-                ':phone' => $phone,
-                ':email' => $email,
-                ':password' => md5($password),
-                ':city' => $city,
-                ':full_name' => $full_name,
-                ':dob' => $dob
-            ));
+            if ($password = $passwordR) {
+                $check = self::checkUser_Enail($username, $email);
+                if ($check == 'OK') {
+                    $stm = $this->db->prepare('INSERT INTO ' .
+                        self::tableName . '(username,address,phone,password,email,city,full_name,dob)
+                               VALUES(:username,:address,:phone,:password,:email,:city,:full_name,:dob)');
+                    $stm->execute(array(
+                        ':username' => $username,
+                        ':address' => $address,
+                        ':phone' => $phone,
+                        ':email' => $email,
+                        ':password' => md5($password),
+                        ':city' => $city,
+                        ':full_name' => $full_name,
+                        ':dob' => $dob
+                    ));
+                } else return $check;
+            } else return 'Hai mật khảu không khớp';
         } catch (\Throwable $th) {
             echo $th->getMessage();
         }
@@ -48,7 +55,33 @@ class Users extends DB implements IModel
         //tra ve so ban ghi
         return $stm->rowCount();
     }
-
+    function checkUser_Enail($username, $email)
+    {
+        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " WHERE username=:username");
+        $stm->setFetchMode(PDO::FETCH_ASSOC);
+        $stm->execute(array(":username" => $username));
+        $check = $stm->fetch();
+        if (!empty($check)) {
+            return 'Tên đăng nhập đã tồn tại';
+        }
+        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " WHERE email=:email");
+        $stm->setFetchMode(PDO::FETCH_ASSOC);
+        $stm->execute(array(':email' => $email));
+        $check = $stm->fetch();
+        if (!empty($check)) {
+            return 'Email đã tồn tại';
+        }
+        return 'OK';
+    }
+    function checkLogin($payload)
+    {
+        $username = $payload['username'];
+        $password = $payload['password'];
+        $stm =  $this->db->prepare('SELECT * FROM ' . self::tableName . " WHERE username = :username AND password = :password  LIMIT 1");
+        $stm->setFetchMode(PDO::FETCH_ASSOC);
+        $stm->execute(array(':username' => $username, ':password' =>  md5($password)));
+        return  $stm->fetch();
+    }
     function delete($id)
     {
         $this->db->query("DELETE FROM " . self::tableName . " WHERE id = " . $id);
@@ -92,7 +125,6 @@ class Users extends DB implements IModel
     }
     public function login($payload)
     {
-        
     }
     public function register($payload)
     {
@@ -105,5 +137,12 @@ class Users extends DB implements IModel
             $row  = $r;
         }
         return $r;
+    }
+    function getByUsername($username)
+    {
+        $stm =  $this->db->prepare('SELECT * FROM ' . self::tableName . " WHERE username = :username ");
+        $stm->setFetchMode(PDO::FETCH_ASSOC);
+        $stm->execute(array(':username' => $username));
+        return  $stm->fetch();
     }
 }

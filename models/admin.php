@@ -9,7 +9,7 @@ class Admin extends DB implements Iadmin
         parent::__construct();
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-    function insert($payload) ///regis
+    function insert($payload) ///register
     {
         try {
             $alert = '';

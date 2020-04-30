@@ -53,7 +53,7 @@ try {
                         </div>
                         <div class="product-option-shop">
                             <a class="add_to_cart_button" data-quantity="1"" rel="nofollow" 
-                            href="?add-to-cart=<?php echo $product['id'] ?>">Add to cart</a>
+                            href="?add-to-cart=<?php echo $product['id'] ?>">Thêm vào giỏ</a>
                         </div>
                     </div>
                 </div>

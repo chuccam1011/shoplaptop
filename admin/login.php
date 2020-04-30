@@ -7,7 +7,7 @@ if (isset($_POST['submit'])) {
     if ($admin->checkLogin($_POST) != null) {
         $_SESSION['username'] = $_POST['username'];
         header("Location:product/index.php");
-        var_dump($_SESSION);
+       // var_dump($_SESSION);
     } else {
         //var_dump($_SESSION);
         $alert = 'Sai ten dang  nhap hoac mat khau  sai !';

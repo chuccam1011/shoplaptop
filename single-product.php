@@ -4,6 +4,7 @@ include_once("inc/top.php");
 ?>
 <?php
 $product = new Product();
+//to get info of product
 if (isset($_GET['product_id'])) {
     $id = $_GET['product_id'];
     $productSingle = $product->getProductById($id);
@@ -13,8 +14,57 @@ if (isset($_GET['product_id'])) {
 } else {
     //header('Location:http://localhost/laptopcu');
 }
-
+//add product to cart by POST method
+if (isset($_POST['add-to-cart']) && $_POST['add-to-cart'] > 0) {
+    $id = $_POST['add-to-cart'];
+    //   var_dump($_POST);
+    $quantity = $_POST['quantity'];
+    $productInCart = $product->getProductById($id);
+    //  var_dump($productInCart);
+    $price = $productInCart['price'];
+    $name = $productInCart['name'];
+    if (isset($_SESSION['cart'])) {
+        $cart = $_SESSION['cart'];
+        $flag = false;
+        for ($i = 0; $i < count($cart); $i++) {
+            if ($id == $cart[$i]['id']) {
+                $cart[$i]['quantity'] = $quantity;
+                $flag = true; //isseted product in cart
+                break;
+            }
+        }
+        if ($flag == false) { //if !isset product in cart
+            $item = array(
+                'id' => $id,
+                'quantity' => $quantity,
+                'price' => $price,
+                'name' => $name
+            );
+            array_push($cart, $item);
+            $_SESSION['cart'] = $cart;
+        }
+    } else { //if cart not isset
+        $item = array(
+            'id' => $id,
+            'quantity' => $quantity,
+            'price' => $price,
+            'name' => $name
+        );
+        $cart = array($item);
+        $_SESSION['cart'] = $cart;
+    }
+}
 ?>
+<script>
+    function toggleImage() {
+        var img1 = "http://placehold.it/350x150";
+        var img2 = "http://placehold.it/200x200";
+
+        var imgElement = document.getElementById('toggleImage');
+
+        imgElement.src = (imgElement.src === img1) ? img2 : img1;
+    }
+</script>
 
 <div class="product-big-title-area">
     <div class="container">
@@ -42,7 +92,7 @@ if (isset($_GET['product_id'])) {
                 <div class="product-content-right">
                     <div class="product-breadcroumb">
                         <a href="index.php">Home</a>
-                        <a href=""><?php echo $cateSingle['name'] ?></a>
+                        <a href="productByCategory.php?cate=<?php echo $cateSingle['id'] ?>"><?php echo $cateSingle['name'] ?></a>
                         <a href=""><?php echo $productSingle['name'] ?></a>
                     </div>
                     <?php $listImg = $product->getImg($productSingle['id']);
@@ -62,13 +112,17 @@ if (isset($_GET['product_id'])) {
                                         echo '<img height="800px" width="1000px" src="' . $src . '" alt="">';
                                     }
                                     ?>
+
                                 </div>
+                                <!--        to show img -->
                                 <div class="product-gallery">
                                     <?php
                                     foreach ($listImg as $r) {
                                     ?>
                                         <a href="?product_id=<?php echo $id ?>&&img=<?php echo  $r['img'] ?>">
-                                            <img src="<?php echo 'admin/product/uploads/' . $r['img'] ?>" alt=""></a>
+                                            <img id="toggleImage" onclick="toggleImage();" src="<?php echo 'admin/product/uploads/' . $r['img'] ?>" alt="">
+                                        </a>
+
                                     <?php } ?>
                                 </div>
                             </div>
@@ -80,16 +134,16 @@ if (isset($_GET['product_id'])) {
                                 <div class="product-inner-price">
                                     <!-- <ins><?php echo number_format($productSingle['price']) . ' VND' ?></ins> -->
                                     <ins><?php $sellprice = $productSingle['price'] * (100 - $productSingle['discount']) / 100;
-                                            echo number_format($sellprice). ' VND' ?></ins>
-                                    <del><?php if ($sellprice != $productSingle['price']) echo number_format($productSingle['price']). ' VND' ?></del>
+                                            echo number_format($sellprice) . ' VND' ?></ins>
+                                    <del><?php if ($sellprice != $productSingle['price']) echo number_format($productSingle['price']) . ' VND' ?></del>
                                     <!-- <del>$100.00</del> -->
                                 </div>
-
+                                <!-- form post to cart  -->
                                 <form action="" method="post" class="cart">
                                     <div class="quantity">
-                                        <input type="number" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
+                                        <input type="number" size="4" class="input-text qty text" title="Số lượng" value="1" name="quantity" min="1" step="1">
                                     </div>
-                                    <button class="add_to_cart_button" name="add_to_cart" type="submit">Thêm vào giỏ</button>
+                                    <button class="add_to_cart_button" name="add-to-cart" value="<?php echo $productSingle['id'] ?>" type="submit">Thêm vào giỏ</button>
                                 </form>
 
                                 <div class="product-inner-category">
