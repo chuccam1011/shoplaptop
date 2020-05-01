@@ -2,16 +2,44 @@
 include_once("inc/head.php");
 include_once("inc/top.php");
 include_once("./models/users.php");
+include_once("./models/order.php");
+
 ?>
 <?php
-$product = new Product();
+if (isset($_SESSION['success'])) {
+    unset($_SESSION['success']);
+}
+//show product of cart
+$product = new Product(); // to show slibar products
 $users = new Users();
+$order = new Order();
 $cart = $_SESSION['cart'];
-$user = $users->getByUsername($_SESSION['username']);
+$user = $users->getByid($_SESSION['user_id']);
+//to order users
+if (isset($_POST['order']) && $cart != NULL) {
+    //thong tin nguoi mua hang
+    $_POST['user_id'] = $_SESSION['user_id'];
+    $result =  $order->insert($_POST, $cart);
+    // var_dump($result);
+    if ($result == 1) {
+        $_SESSION['success'] = 'Đặt hàng  thành công';
+        $_SESSION['cart'] = array();
+        // header("Location:orders.php");
+    }
+}
 ?>
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
     <div class="container">
+        <?php
+        if (isset($_SESSION['success'])) {
+        ?>
+            <div class="alert alert-primary" role="alert">
+                <?php echo $_SESSION['success'] ?>
+                <a href="orders.php">Xem đơn hàng của bạn</a><br>
+                <a href="index.php">Tiếp tục mua hang </a><br>
+            </div>
+        <?php } ?>
         <div class="row">
             <div class="col-md-4">
                 <?php include_once('inc\singleSlidebar.php') ?>
@@ -68,7 +96,7 @@ $user = $users->getByUsername($_SESSION['username']);
                                     </div>
                                 </div>
 
-                                <div class="col-2">
+                                <!-- <div class="col-2">
                                     <div class="woocommerce-shipping-fields">
                                         <h3 id="ship-to-different-address">
                                             <label class="checkbox" for="ship-to-different-address-checkbox">Gửi tới 1 địa chỉ khác </label>
@@ -116,18 +144,18 @@ $user = $users->getByUsername($_SESSION['username']);
 
                                     </div>
 
-                                </div>
+                                </div> -->
 
                             </div>
 
-                            <h3 id="order_review_heading">Your order</h3>
+                            <h3 id="order_review_heading">Đơn Hàng Của Bạn</h3>
 
                             <div id="order_review" style="position: relative;">
                                 <table class="shop_table">
                                     <thead>
                                         <tr>
-                                            <th class="product-name">Product</th>
-                                            <th class="product-total">Total</th>
+                                            <th class="product-name">Sản phẩm</th>
+                                            <th class="product-total">Tổng</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -137,7 +165,7 @@ $user = $users->getByUsername($_SESSION['username']);
                                                 <td class="product-name">
                                                     <?php echo $item['name']; ?> <strong class="product-quantity">× <?php echo $item['quantity']; ?></strong> </td>
                                                 <td class="product-total">
-                                                    <span class="amount"><?php echo number_format($item['price']*$item['quantity']).' VND' ?></span> </td>
+                                                    <span class="amount"><?php echo number_format($item['price'] * $item['quantity']) . ' VND' ?></span> </td>
                                             </tr>
                                         <?php } ?>
 
@@ -145,13 +173,13 @@ $user = $users->getByUsername($_SESSION['username']);
                                     <tfoot>
 
                                         <tr class="cart-subtotal">
-                                            <th>Cart Subtotal</th>
-                                            <td><span class="amount"><?php echo number_format($total).' VND' ?></span>
+                                            <th>Tổng Giỏ Hàng</th>
+                                            <td><span class="amount"><?php echo number_format($total) . ' VND' ?></span>
                                             </td>
                                         </tr>
-                                            <?php $shipping=0; ?>
+                                        <?php $shipping = 0; ?>
                                         <tr class="shipping">
-                                            <th>Shipping and Handling</th>
+                                            <th>Shipping</th>
                                             <td>
                                                 Free Shipping
                                                 <input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
@@ -161,7 +189,7 @@ $user = $users->getByUsername($_SESSION['username']);
 
                                         <tr class="order-total">
                                             <th>Order Total</th>
-                                            <td><strong><span class="amount"><?php echo number_format($total+$shipping) ?></span></strong> </td>
+                                            <td><strong><span class="amount"><?php echo number_format($total + $shipping) ?></span></strong> </td>
                                         </tr>
 
                                     </tfoot>

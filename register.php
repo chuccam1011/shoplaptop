@@ -20,6 +20,7 @@
 if (isset($_SESSION['success'])) {
     unset($_SESSION['success']);
 }
+
 require_once('./models/users.php');
 $result_check = '';
 //kiem tra xem user va mail  da ton tiaj  troeng DB hay chua
@@ -130,7 +131,7 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="row align-items-center remember">
-                            <input type="checkbox" name="remember">Remember Me
+                            <input type="checkbox" checked="checked" name="remember">Remember Me
                         </div>
 
                         <div class="form-group">

@@ -1,9 +1,8 @@
 <?php
 require_once('C:/xampp/htdocs/Laptopcu/db.php');
-require_once('imodel.php');
-class Users extends DB implements IModel
+class Order extends DB
 {
-    const tableName = 'user';
+    const tableName = 'ordered';
     public function __construct()
     {
         parent::__construct();
@@ -16,38 +15,46 @@ class Users extends DB implements IModel
         $stm->execute();
         return $stm->fetchAll();
     }
+    function getOrderProducts($id)
+    {
 
-    function insert($payload)
+        $stm = $this->db->prepare("SELECT * FROM " . ' products_orders WHERE order_id=:id');
+        $stm->execute(array(':id' => $id));
+        return $stm->fetchAll();
+    }
+
+    function insert($payload, $cart)
     {
         try {
+            $user_id = $payload['user_id'];
+            $extra_address = '';
+            $notes = $payload['shipping_notes'];
 
-            $username = $payload['username'];
-            $address = $payload['address'];
-            $phone = $payload['phone'];
-            $city = $payload['city'];
-            $password = $payload['password'];
-            $passwordR = $payload['passwordR'];
-            $full_name = $payload['full_name'];
-            $dob = $payload['dob'];
-            $email = $payload['email'];
-            if ($password = $passwordR) {
-                $check = self::checkUser_Enail($username, $email);
-                if ($check == 'OK') {
-                    $stm = $this->db->prepare('INSERT INTO ' .
-                        self::tableName . '(username,address,phone,password,email,city,full_name,dob)
-                               VALUES(:username,:address,:phone,:password,:email,:city,:full_name,:dob)');
-                    $stm->execute(array(
-                        ':username' => $username,
-                        ':address' => $address,
-                        ':phone' => $phone,
-                        ':email' => $email,
-                        ':password' => md5($password),
-                        ':city' => $city,
-                        ':full_name' => $full_name,
-                        ':dob' => $dob
-                    ));
-                } else return $check;
-            } else return 'Hai mật khảu không khớp';
+            //
+            $stm = $this->db->prepare('INSERT INTO ' .
+                self::tableName . '(user_id,status,notes,extra_address)
+                 VALUES(:user_id, :status, :notes, :extra_address)');
+            $stm->execute(array(
+                'user_id' => $user_id,
+                'status' => 0,
+                'notes' => $notes,
+                'extra_address' => $extra_address
+            ));
+            $db = new DB();
+            $order_id = $db->getMax_id(self::tableName);
+            // var_dump($cart);
+            //insert ordered i to products_orders to save product
+            foreach ($cart as $item) {
+
+                $stm = $this->db->prepare('INSERT INTO ' .
+                    'products_orders' . '(order_id,product_id,quantity)
+                  VALUES(:order_id, :product_id, :quantity)');
+                $stm->execute(array(
+                    'order_id' => $order_id,
+                    'product_id' => $item['id'],
+                    'quantity' => $item['quantity']
+                ));
+            }
         } catch (\Throwable $th) {
             echo $th->getMessage();
         }
@@ -55,39 +62,13 @@ class Users extends DB implements IModel
         //tra ve so ban ghi
         return $stm->rowCount();
     }
-    function checkUser_Enail($username, $email)
-    {
-        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " WHERE username=:username");
-        $stm->setFetchMode(PDO::FETCH_ASSOC);
-        $stm->execute(array(":username" => $username));
-        $check = $stm->fetch();
-        if (!empty($check)) {
-            return 'Tên đăng nhập đã tồn tại';
-        }
-        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " WHERE email=:email");
-        $stm->setFetchMode(PDO::FETCH_ASSOC);
-        $stm->execute(array(':email' => $email));
-        $check = $stm->fetch();
-        if (!empty($check)) {
-            return 'Email đã tồn tại';
-        }
-        return 'OK';
-    }
-    function checkLogin($payload)
-    {
-        $username = $payload['username'];
-        $password = $payload['password'];
-        $stm =  $this->db->prepare('SELECT * FROM ' . self::tableName . " WHERE username = :username AND password = :password  LIMIT 1");
-        $stm->setFetchMode(PDO::FETCH_ASSOC);
-        $stm->execute(array(':username' => $username, ':password' =>  md5($password)));
-        return  $stm->fetch();
-    }
-    function delete($id)
+
+    function delete($id) //for admin
     {
         $this->db->query("DELETE FROM " . self::tableName . " WHERE id = " . $id);
     }
 
-    function update($payload)//for admin
+    function update($payload) //for admin update status
     {
         // $stm = $this->db->prepare('UPDATE ' . self::tableName . ' 
         //     SET address = :address, phone = :phone WHERE id = :id');
@@ -124,7 +105,7 @@ class Users extends DB implements IModel
         return $stm->rowCount();
     }
 
-    function updateUser($payload)//for user update
+    function updateUser($payload) //for user update
     {
         // $stm = $this->db->prepare('UPDATE ' . self::tableName . ' 
         //     SET address = :address, phone = :phone WHERE id = :id');
@@ -156,13 +137,7 @@ class Users extends DB implements IModel
 
         return $stm->rowCount();
     }
-    public function login($payload)
-    {
-    }
-    public function register($payload)
-    {
-        # code...
-    }
+
     function getById($id)
     {
         $rows = $this->db->query("SELECT * FROM " . self::tableName . " WHERE id= $id");

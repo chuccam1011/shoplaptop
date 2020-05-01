@@ -3,6 +3,7 @@ require_once('./models/brand.php');
 require_once('./models/cate.php');
 require_once('./models/products.php');
 require_once('./models/slider.php');
+require_once('./models/order.php');
 session_start();
 //get title for head
 $_SESSION['title'] = 'Shop Laptop cũ';
@@ -30,13 +31,14 @@ switch ($actual_link) {
     $_SESSION['title'] = 'Check out';
     break;
   default:
-  $_SESSION['title'] = 'Shop Laptop';
+    $_SESSION['title'] = 'Shop Laptop';
     break;
 }
 
 // user logout
-if (isset($_SESSION['user_login']) && $_SESSION['user_login'] != '') {
-} else header('Location:login.php');
+if (isset($_SESSION['user_login']) && $_SESSION['user_login'] == '') {
+  header('Location:login.php');
+}
 if (isset($_GET['logout']) && $_GET['logout'] == true) {
   $_SESSION['user_login'] = '';
   header('Location:login.php');
@@ -72,6 +74,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == true) {
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="icon" href="faicon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- <link rel="stylesheet" type="text/css" href="login.css"> -->
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

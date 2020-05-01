@@ -55,23 +55,13 @@ if (isset($_POST['add-to-cart']) && $_POST['add-to-cart'] > 0) {
     }
 }
 ?>
-<script>
-    function toggleImage() {
-        var img1 = "http://placehold.it/350x150";
-        var img2 = "http://placehold.it/200x200";
-
-        var imgElement = document.getElementById('toggleImage');
-
-        imgElement.src = (imgElement.src === img1) ? img2 : img1;
-    }
-</script>
 
 <div class="product-big-title-area">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="product-bit-title text-center">
-                    <h2>Shop</h2>
+                    <h2>Chi Tiết Sản Phẩm</h2>
                 </div>
             </div>
         </div>
@@ -105,23 +95,18 @@ if (isset($_POST['add-to-cart']) && $_POST['add-to-cart'] > 0) {
                                     <?php
                                     $src = null;
                                     if (count($listImg) != 0) $src = 'admin/product/uploads/' . $listImg[0]['img'];
-                                    if (isset($_GET['img'])) {
-                                        $src = 'admin/product/uploads/' . $_GET['img'];
-                                        echo '<img height="800px" width="1000px" src="' . $src . '" alt="">';
-                                    } else {
-                                        echo '<img height="800px" width="1000px" src="' . $src . '" alt="">';
-                                    }
+                                    echo '<img class="mainImg" height="800px" width="1000px" src="' . $src . '" alt="">';
                                     ?>
 
                                 </div>
-                                <!--        to show img -->
+                                <!--   to show img -->
                                 <div class="product-gallery">
                                     <?php
-                                    foreach ($listImg as $r) {
+                                    for ($j = 0; $j < count($listImg); $j++) {
                                     ?>
-                                        <a href="?product_id=<?php echo $id ?>&&img=<?php echo  $r['img'] ?>">
-                                            <img id="toggleImage" onclick="toggleImage();" src="<?php echo 'admin/product/uploads/' . $r['img'] ?>" alt="">
-                                        </a>
+                                        <!-- <a href="?product_id=<?php echo $id ?>&&img=<?php echo  $r['img'] ?>"> -->
+                                        <img id="" class="<?php echo 'imgIcon' . $j ?>" src="<?php echo 'admin/product/uploads/' . $listImg[$j]['img'] ?>" alt="">
+                                        <!-- </a> -->
 
                                     <?php } ?>
                                 </div>
@@ -252,7 +237,42 @@ if (isset($_POST['add-to-cart']) && $_POST['add-to-cart'] > 0) {
         </div>
     </div>
 </div>
+<script>
+    // change src img main product for 5 img
+    $(document).ready(function() {
+        $('.imgIcon0').click(function() {
+            $imgsrc = $('.imgIcon0').attr('src');
+            console.log($imgsrc);
+            $('.mainImg').attr('src', $imgsrc);
+        });
+        $('.imgIcon1').click(function() {
 
+            $imgsrc = $('.imgIcon1').attr('src');
+            console.log($imgsrc);
+            $('.mainImg').attr('src', $imgsrc);
+        });
+        $('.imgIcon2').click(function() {
+
+            $imgsrc = $('.imgIcon2').attr('src');
+            console.log($imgsrc);
+            $('.mainImg').attr('src', $imgsrc);
+
+        });
+        $('.imgIcon3').click(function() {
+
+            $imgsrc = $('.imgIcon3').attr('src');
+            console.log($imgsrc);
+            $('.mainImg').attr('src', $imgsrc);
+        });
+        $('.imgIcon4').click(function() {
+
+            $imgsrc = $('.imgIcon4').attr('src');
+            console.log($imgsrc);
+            $('.mainImg').attr('src', $imgsrc);
+        });
+
+    });
+</script>
 <?php
 include_once("inc/footer.php");
 ?>

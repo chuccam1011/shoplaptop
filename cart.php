@@ -66,9 +66,7 @@ if (isset($_POST['update_cart'])) {
     }
     $_SESSION['cart'] = $cart;
 }
-if (isset($_POST['check_out'])) {
-    header("Location:index.php");
-}
+
 ?>
 
 

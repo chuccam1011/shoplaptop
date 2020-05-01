@@ -58,13 +58,14 @@ foreach ($cart as $item) {
             <div class="row">
                 <div class="col-md-8">
                     <div class="user-menu">
-                        <ul>    
-                            <li><img height="20px" width="20px" src="" alt=""><?php echo 'Xin Chào!  '.$_SESSION['username'] ?></li>
-                            <li><a href="#"><i class="fa fa-user"></i>Tài khoản của tôi </a></li>
-                            <li><a href="#"><i class="fa fa-heart"></i> Yêu thích</a></li>
-                            <li><a href="cart.php"><i class="fa fa-user"></i>Giỏ Hàng</a></li>
-                            <li><a href="checkout.php"><i class="fa fa-user"></i> Checkout</a></li>
-                            <li><a href="login.php"><i class="fa fa-user"></i> Đăng Nhập</a></li>
+                        <ul>
+                            <li><img height="20px" width="20px" src="" alt=""><?php echo 'Xin Chào!  ' . $_SESSION['user_login'] ?></li>
+                            <li><a href="profileuser.php"><i class="fa fa-user"></i>Tài khoản của tôi </a></li>
+
+                            <li><a href="orders.php"><i class="fa fa-shopping-cart"></i>Đơn Hàng</a></li>
+                            <li><a href="cart.php"><i class="fa fa-shopping-cart"></i>Giỏ Hàng</a></li>
+                            <li><a href="checkout.php"><i class="fa fa-check"></i> Checkout</a></li>
+                            <!-- <li><a href="login.php"><i class="fa fa-user"></i> Đăng Nhập</a></li> -->
                             <li><a href="?logout=true"><i class=""></i> Đăng xuất</a></li>
                         </ul>
                     </div>
@@ -85,7 +86,7 @@ foreach ($cart as $item) {
 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="cart.php">Cart - <span class="cart-amunt"><?php echo number_format($total).' đ'; ?></span>
+                        <a href="cart.php">Cart - <span class="cart-amunt"><?php echo number_format($total) . ' đ'; ?></span>
                             <i class="fa fa-shopping-cart"></i> <span class="product-count"><?php echo count($cart); ?></span></a>
                     </div>
                 </div>
@@ -109,8 +110,9 @@ foreach ($cart as $item) {
                         <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="shop.php">Tất cả sản phẩm</a></li>
                         <li><a href="cart.php">Giỏ hàng</a></li>
-                        <li><a href="#">Category</a></li>
-                        <li><a href="#">Others</a></li>
+                        <li><a href="category.php">Category</a></li>
+                        <li><a href="#">Chính Sách</a></li>
+
                     </ul>
                 </div>
             </div>
