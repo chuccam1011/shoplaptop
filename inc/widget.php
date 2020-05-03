@@ -37,7 +37,7 @@ $product = new Product();
             </div>
             <div class="col-md-4">
                 <div class="single-product-widget">
-                    <h2 class="product-wid-title">Recently Viewed</h2>
+                    <h2 class="product-wid-title">Top Views</h2>
                     <!-- <a href="" class="wid-view-more">View All</a> -->
                     <?php
                     //get product top seller

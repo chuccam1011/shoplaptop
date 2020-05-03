@@ -1,4 +1,6 @@
 <?php
+// this to  show this products in last of page
+
 $product = new Product();
 $list = $product->getAll(0, 10);
 ?>

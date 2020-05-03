@@ -1,7 +1,7 @@
 <div class="single-sidebar">
-    <h2 class="sidebar-title">Search Products</h2>
-    <form action="">
-        <input type="text" placeholder="Search products...">
+    <h2 class="sidebar-title">Tìm kiếm sản phẩm</h2>
+    <form method="get" action="search.php">
+        <input type="text" name="search_key" placeholder="Nhập tên sản phẩm ...." required>
         <input type="submit" name="search" value="Search">
     </form>
 </div>

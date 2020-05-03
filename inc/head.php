@@ -41,9 +41,13 @@ if (isset($_SESSION['user_login']) && $_SESSION['user_login'] == '') {
 }
 if (isset($_GET['logout']) && $_GET['logout'] == true) {
   $_SESSION['user_login'] = '';
+  $_SESSION['user_id'] = '';
+  $_SESSION['cart'] = array();
   header('Location:login.php');
 }
-
+// if (isset($_GET['search'])) {
+//   header('Location:http://localhost/laptopcu/search.php');
+// }
 ?>
 
 <!DOCTYPE html>

@@ -14,8 +14,8 @@ $listbrand = $brand->getAllNoLimit();
                         <?php
                         foreach ($listbrand as $r) {
                         ?>
-                            <a href="?search=<?php echo $r['name'] ?>"> 
-                            <img src="<?php echo 'admin/brand/uploads/' . $r['img'] ?>" " alt="<?php echo $r['name'] ?>"></a>
+                            <a href="http://localhost/laptopcu/search.php?search_key=<?php echo $r['name'] ?>">
+                                <img src="<?php echo 'admin/brand/uploads/' . $r['img'] ?>" " alt=" <?php echo $r['name'] ?>"></a>
 
                         <?php } ?>
                     </div>

@@ -55,7 +55,28 @@ class Product extends DB implements Iproduct
             echo $e;
         }
     }
+    function getopDiscont()
+    {
+        try {
+            $stm = $this->db->prepare("SELECT * FROM " .  self::tableName . ' WHERE 1 ORDER BY time_add DESC LIMIT 5');
+            $stm->execute();
+            return $stm->fetchAll();
+        } catch (\Throwable $e) {
+            echo $e;
+        }
+    }
+    function getListBySearch($keyword)
+    {
+        try {
 
+            $stm = $this->db->prepare("SELECT * FROM " . self::tableName . ' WHERE name LIKE :keyword ' . ' ORDER BY name');
+            $stm->setFetchMode(PDO::FETCH_ASSOC);
+            $stm->execute(array(":keyword" => '%' . $keyword . '%'));
+            return $stm->fetchAll();
+        } catch (\Throwable $e) {
+            echo $e;
+        }
+    }
     function insert($payload, $src, $srcOfContent)
     {
         try {
@@ -137,7 +158,7 @@ class Product extends DB implements Iproduct
         //tra ve so ban ghi
         return $stm->rowCount();
     }
-  
+
     public function getContentProduct($id)
     {
         $stm = $this->db->prepare("SELECT * FROM detail WHERE product_id=$id");

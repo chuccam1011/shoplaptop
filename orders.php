@@ -82,7 +82,7 @@ $listOrder = $order->getAll(0, 10);
                                                                 </thead>
                                                                 <tbody>
 
-                                                                    <?php foreach ($listProducts as $pro) {
+                                                                    <?php foreach ($listProducts as $pro) { //list product in order from products_orders
                                                                         $singleproduct = $product->getProductById($pro['product_id']);
 
                                                                     ?>
@@ -133,7 +133,6 @@ $listOrder = $order->getAll(0, 10);
             </div>
         </div>
     </div>
-</div>
 </div>
 <?php
 include_once("inc/footer.php");
