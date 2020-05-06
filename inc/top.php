@@ -82,6 +82,7 @@ foreach ($cart as $item) {
                     <div class="logo">
                         <h1><a href="./"><img src="img/logo.png"></a></h1>
                     </div>
+
                 </div>
 
                 <div class="col-sm-6">
@@ -103,17 +104,22 @@ foreach ($cart as $item) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                 </div> -->
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="shop.php">Tất cả sản phẩm</a></li>
-                        <li><a href="cart.php">Giỏ hàng</a></li>
+                        <!-- <li><a href="cart.php">Giỏ hàng</a></li> -->
                         <!-- <li><a href="category.php">Category</a></li> -->
-                        <li><a href="category.php?cate=new">Laptop Mới</a></li>
-                        <li><a href="category.php?cate=old">Laptop Cũ</a></li>
+                        <li><a href="category.php?cate_id=8">Laptop Mới</a></li>
+                        <li><a href="category.php?cate_id=7">Laptop Cũ</a></li>
                         <li><a href="#">Linh Kiện</a></li>
+                        <li><a href="category.php">Danh Mục Sản Phẩm</a></li>
+                        <li><a href="brand.php">Hang SX</a></li>
+                        
                         <li>
                             <form style="margin-top: 10px" action="search.php" method="gets">
                                 <input type="text" name="search_key" id="" required>

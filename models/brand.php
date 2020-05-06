@@ -28,7 +28,7 @@ class Brand extends DB implements Ibrand
     {
         try {
             $brandName = $payload['brandName'];
-            $file = $payload['file'];//logo
+            $file = $payload['file']; //logo
             $stm = $this->db->prepare('INSERT INTO ' .
                 self::tableName . '(name,img)
              VALUES(:brandName,:file)');
@@ -49,9 +49,14 @@ class Brand extends DB implements Ibrand
     {
         $this->db->query("DELETE FROM " . self::tableName . " WHERE id = " . $id);
     }
-
+    function getProduct($id)
+    {
+        $stm = $this->db->prepare("SELECT * FROM product WHERE brand_id= $id");
+        $stm->execute();
+        return $stm->fetchAll();
+    }
     function update($payload)
-    {   
+    {
         try {
             $brandName = $payload['name'];
             $brandLogo = $payload['file'];

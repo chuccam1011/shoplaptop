@@ -9,7 +9,7 @@ if (isset($_GET['product_id'])) {
     $id = $_GET['product_id'];
     $productSingle = $product->getProductById($id);
     $cate = new Cate();
-    $cateSingle = $cate->getCateById($productSingle['cate_id']);
+    // $cateSingle = $cate->getCateById($productSingle['cate_id']);
     //  var_dump($cateSingle);
 } else {
     //header('Location:http://localhost/laptopcu');
@@ -82,7 +82,7 @@ if (isset($_POST['add-to-cart']) && $_POST['add-to-cart'] > 0) {
                 <div class="product-content-right">
                     <div class="product-breadcroumb">
                         <a href="index.php">Home</a>
-                        <a href="productByCategory.php?cate=<?php echo $cateSingle['id'] ?>"><?php echo $cateSingle['name'] ?></a>
+                        <!-- <a href="productByCategory.php?cate=<?php echo $cateSingle['id'] ?>"><?php echo $cateSingle['name'] ?></a> -->
                         <a href=""><?php echo $productSingle['name'] ?></a>
                     </div>
                     <?php $listImg = $product->getImg($productSingle['id']);

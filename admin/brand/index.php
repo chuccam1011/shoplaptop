@@ -41,7 +41,7 @@ if (isset($_GET['action'])) {
             <tbody>
                 <?php
 
-                $list = $brand->getAll(0, 5);
+                $list = $brand->getAllnoLimit();
 
                 foreach ($list as $r) {
                 ?>

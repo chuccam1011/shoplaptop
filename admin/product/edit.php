@@ -19,7 +19,9 @@ if (isset($_GET['id'])) {
         $contents = $product->getContentProduct($id);
         //  var_dump($contents);
         $obj = $product->getProductById($id);
-        //   var_dump($obj);
+        //get  cate by product id
+        $catesOfProduct = $cate->getCatesByProductId($id);
+        // var_dump($catesOfProduct);
     } else {
         header('Location:index.php');
     }
@@ -70,6 +72,7 @@ if (isset($_POST['submit'])) {
                 <label for="staticEmail" class="col-sm-2 col-form-label">Thương Hiệu</label>
                 <div class="col-sm-10">
                     <select name="brand_id">
+                     
                         <?php foreach ($listbrand as $brand) {
                         ?>
                             <option <?php if ($brand['id'] == $obj['brand_id']) echo 'selected'; ?> value="<?php echo $brand['id']  ?>"><?php echo $brand['name'] ?></option>
@@ -77,14 +80,39 @@ if (isset($_POST['submit'])) {
                     </select>
                 </div>
             </div>
-
+            <!-- 3 category -->
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">The Loai</label>
                 <div class="col-sm-10">
-                    <select name="cate_id">
+                    <select name="cate_id[]">
+                        <option value="0">Chon the loai</option>
                         <?php foreach ($listcate as $cate) {
                         ?>
-                            <option <?php if ($cate['id'] == $obj['cate_id']) echo 'selected'; ?> value="<?php echo $cate['id'];  ?>"><?php echo $cate['name'] ?></option>
+                            <option <?php if ($cate['id'] == $catesOfProduct[0]['cate_id']) echo 'selected'; ?> value="<?php echo $cate['id'];  ?>"><?php echo $cate['name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">The Loai</label>
+                <div class="col-sm-10">
+                    <select name="cate_id[]">
+                        <option value="0">Chon the loai</option>
+                        <?php foreach ($listcate as $cate) {
+                        ?>
+                            <option <?php if ($cate['id'] == $catesOfProduct[1]['cate_id']) echo 'selected'; ?> value="<?php echo $cate['id'];  ?>"><?php echo $cate['name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">The Loai</label>
+                <div class="col-sm-10">
+                    <select name="cate_id[]">
+                    <option value="0">Chon the loai</option>
+                        <?php foreach ($listcate as $cate) {
+                        ?>
+                            <option <?php if ($cate['id'] ==  $catesOfProduct[2]['cate_id']) echo 'selected'; ?> value="<?php echo $cate['id'];  ?>"><?php echo $cate['name'] ?></option>
                         <?php } ?>
                     </select>
                 </div>

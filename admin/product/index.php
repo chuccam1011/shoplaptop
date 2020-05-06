@@ -52,7 +52,7 @@ try {
                     <th scope="col">Hình ảnh</th>
                     <th scope="col">Tên</th>
                     <th scope="col">Thương hiệu</th>
-                    <th scope="col">Thể loại</th>
+                    <!-- <th scope="col">Thể loại</th> -->
                     <th scope="col">Giá</th>
                     <th scope="col">Mô tả</th>
                     <th scope="col">CPU</th>
@@ -76,14 +76,10 @@ try {
                         <td><?php echo $r['name'] ?></td>
                         <?php
                         $obj = $brand->getBrandById($r['brand_id']);
-                        ?>
+                        ?>  
                         <td><?php echo $obj['name'] ?></td>
-
-                        <?php
-                        $obj = $cate->getCateById($r['cate_id']);
-                        ?>
-                        <td><?php echo $obj['name'] ?></td>
-                        <td><?php echo $r['price'] ?></td>
+                     
+                        <td><?php echo number_format($r['price']). ' VND'?></td>
                         <td><?php echo $r['short_desc'] ?></td>
                         <td><?php echo $r['chip'] ?></td>
                         <td><?php echo $r['ram']  ?></td>

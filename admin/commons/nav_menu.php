@@ -54,6 +54,11 @@
                     <a class="dropdown-item" href="http://localhost/laptopcu/admin/slider">Xem</a>
                 </div>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link " href="http://localhost/laptopcu/admin/order">
+                    QLi don hang
+                </a>
+            </li>
             <li class="nav-item logout">
                 <a class="nav-link " href="?logout">
                     Logout

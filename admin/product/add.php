@@ -1,13 +1,14 @@
 <?php
-
 require_once('./../commons/head.php');
 require_once('./../../models/products.php');
 require_once('./../../lib/upload.php');
 require_once('./../../models/brand.php');
 require_once('./../../models/cate.php');
+
 if (isset($_SESSION['success'])) {
     unset($_SESSION['success']);
 }
+
 if (isset($_FILES['files']) && isset($_POST['submit'])) {
     $products = new Product();
     //check file upload
@@ -16,7 +17,7 @@ if (isset($_FILES['files']) && isset($_POST['submit'])) {
     $uploadContentImg = new upload();
     $srcOfContent = $uploadContentImg->uploadImgOfContent(3);
     // print_r($src);
-    if ($src != null &&   $srcOfContent != null) { //upload funtion return
+    if ($src != null) { //upload funtion return
         $count = $products->insert($_POST, $src, $srcOfContent);
         if ($count == 1) {
             $_SESSION['success'] = 'Thêm thành công';
@@ -77,17 +78,50 @@ $listcate = $cate->getAllnoLimit();
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">The Loai</label>
                 <div class="col-sm-10">
-                    <select name="cate_id">
+                    <select name="cate_id[]">
+                    <option value="0">Chon the loai</option>
                         <?php foreach ($listcate as $r2) {
                         ?>
                             <option value="<?php echo $r2['id'];  ?>"><?php echo $r2['name'] ?></option>
                         <?php } ?>
                     </select>
                 </div>
+
+                <!-- <button onclick="addCate()"></button> -->
+            </div>
+            
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">The Loai</label>
+                <div class="col-sm-10">
+                    <select name="cate_id[]">
+                        <option value="0">Chon the loai</option>
+                        <?php foreach ($listcate as $r2) {
+                        ?>
+                            <option value="<?php echo $r2['id'];  ?>"><?php echo $r2['name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                
+                <!-- <button onclick="addCate()"></button> -->
+            </div>
+            
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">The Loai</label>
+                <div class="col-sm-10">
+                    <select name="cate_id[]">
+                    <option value="0">Chon the loai</option>
+                        <?php foreach ($listcate as $r2) {
+                        ?>
+                            <option value="<?php echo $r2['id'];  ?>"><?php echo $r2['name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                
+                <!-- <button onclick="addCate()"></button> -->
             </div>
 
             <div class="form-group row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Hình ảnh</label>
+                <label for="staticEmail" class="col-sm-2 col-form-label">Hình ảnh(chọn 3 hình)</label>
                 <div class="col-sm-10">
                     <!-- <input type="file" name="file" required> -->
                     <input type="file" name="files[]" multiple required />
@@ -108,7 +142,7 @@ $listcate = $cate->getAllnoLimit();
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Tình trạng máy</label>
                 <div class="col-sm-10">
-                    <input type="number" value="1" name="status" placeholder="1 là mới" required>
+                    <input type="number" value="" name="status" placeholder="1 là mới, 0 là cũ" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -226,6 +260,7 @@ $listcate = $cate->getAllnoLimit();
     <input type="submit" name="submit" value="Up Load" class="btn btn-primary"></input>
     </form>
     </div>
+
 </body>
 <?php
 require_once('./../commons/footer.php');

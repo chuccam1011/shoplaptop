@@ -25,12 +25,19 @@ class Cate extends DB implements Icate
         $stm->execute();
         return $stm->fetchAll();
     }
-    function getProductByCate($id)
+    function getCateIndex()
     {
-        $stm = $this->db->prepare("SELECT * FROM product WHERE cate_id= $id LIMIT 10");
+        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . ' WHERE level =0');
         $stm->execute();
         return $stm->fetchAll();
     }
+    function getCatesByProductId($product_id)
+    {
+        $stm = $this->db->prepare("SELECT cate_id FROM cate_product WHERE product_id=$product_id ");
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
     function insert($payload)
     {
         try {

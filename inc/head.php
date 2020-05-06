@@ -78,6 +78,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == true) {
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="icon" href="faicon.png">
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- <link rel="stylesheet" type="text/css" href="login.css"> -->
 

@@ -42,7 +42,7 @@ if (isset($_GET['action'])) {
             <tbody>
                 <?php
 
-                $list = $cates->getAll(0, 5);
+                $list = $cates->getAllnoLimit();
                 foreach ($list as $r) {
                 ?>
                     <tr>

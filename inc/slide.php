@@ -13,13 +13,13 @@ $list = $slider->getAllNoLimit();
 			foreach ($list as $r) {
 			?>
 				<li>
-					<img height="300px" width="400px" src="<?php echo 'admin/slider/uploads/' . $r['img'] ?>" alt="Slide">
+					<img  src="<?php echo 'admin/slider/uploads/' . $r['img'] ?>" alt="Slide">
 					<div class="caption-group">
 						<h2 class="caption title">
-						<span class="primary">6 <strong><?php echo $r['tittle']?></strong></span>
+						<span class="primary"><strong><?php echo $r['tittle']?></strong></span>
 						</h2>
 						<!-- <h4 class="caption subtitle">Dual SIM</h4> -->
-						<a class="caption button-radius" href="single-product.php?product_id=<?php echo $r['id']?>"><span class="icon"></span>Shop Now</a>
+						<a class="caption button-radius" href="single-product.php?product_id=<?php echo $r['product_id']?>"><span class="icon"></span>Shop Now</a>
 					</div>
 				</li>
 			<?php

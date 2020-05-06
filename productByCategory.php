@@ -28,8 +28,7 @@ if (isset($_GET['cate']) && is_numeric($_GET['cate'])) {
     $id = $_GET['cate'];
     $cate = $cates->getCateById($id);
 }
-$list = $cates->getProductByCate($id);
-
+//
 ?>
 <div class="product-big-title-area">
     <div class="container">

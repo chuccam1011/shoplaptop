@@ -19,6 +19,13 @@ class Product extends DB implements Iproduct
         $max = $result->fetchColumn();
         echo $max;
     }
+    //SELECT * FROM product p INNER JOIN cate_product cp ON cp.product_id= p.id INNER JOIN category c ON c.id= cp.cate_id WHERE cp.cate_id=3 ORDER BY p.id DESC
+    function getListProductByCategory($cate_id)
+    {
+        $stm = $this->db->prepare("SELECT p.id, p.name,p.price,p.discount FROM product p INNER JOIN cate_product cp ON cp.product_id= p.id INNER JOIN category c ON c.id= cp.cate_id WHERE cp.cate_id=$cate_id ORDER BY p.id DESC");
+        $stm->execute();
+        return $stm->fetchAll();
+    }
     function getAll($offset, $count)
     {
         $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " LIMIT $offset,$count");
@@ -77,13 +84,13 @@ class Product extends DB implements Iproduct
             echo $e;
         }
     }
-    function insert($payload, $src, $srcOfContent)
+    function insert($payload, $srcs, $srcOfContent)
     {
         try {
             $productName = $payload['productName'];
             $price = $payload['price'];
             $brand_id = $payload['brand_id'];
-            $cate_id = $payload['cate_id'];
+            $cate_ids = $payload['cate_id'];
             $keyword = $payload['keyword'];
             $short_desc = $payload['short_desc'];
             $status = $payload['status'];
@@ -103,13 +110,12 @@ class Product extends DB implements Iproduct
             $discount = $payload['discount'];
 
             $stm = $this->db->prepare('INSERT INTO ' .
-                self::tableName . '(name,price,brand_id,cate_id	,keyword,short_desc,status,model,chip,ram,card,drive,display,connect,vantay,operation,pin,weight,size,discount)
-                            VALUES(:productName,:price,:brand_id,:cate_id,:keyword,:short_desc,:status,:model,:chip,:ram,:card,:drive,:display,:connect,:vantay,:operation,:pin,:weight,:size,:discount)');
+                self::tableName . '(name,price,brand_id,keyword,short_desc,status,model,chip,ram,card,drive,display,connect,vantay,operation,pin,weight,size,discount)
+                            VALUES(:productName,:price,:brand_id,:keyword,:short_desc,:status,:model,:chip,:ram,:card,:drive,:display,:connect,:vantay,:operation,:pin,:weight,:size,:discount)');
             $stm->execute(array(
                 ':productName' => $productName,
                 ':price' => $price,
                 ':brand_id' => $brand_id,
-                ':cate_id' => $cate_id,
                 ':keyword' => $keyword,
                 ':short_desc' => $short_desc,
                 ':status' => $status,
@@ -118,7 +124,6 @@ class Product extends DB implements Iproduct
                 ':ram' => $ram,
                 ':card' => $card,
                 ':drive' => $drive,
-                ':card' => $card,
                 ':display' => $display,
                 ':connect' => $connect,
                 ':vantay' => $vantay,
@@ -131,10 +136,10 @@ class Product extends DB implements Iproduct
             $dbtmp = new DB();
             $max =  $dbtmp->getMax_id(self::tableName);
             //chen img_src va product id vao bang img
-            foreach ($src as $srcs) {
+            foreach ($srcs as $src) {
                 $stm2 = $this->db->prepare('INSERT INTO  img (img,product_id) VALUES (:img,:product_id)');
                 $stm2->execute(array(
-                    ':img' => $srcs,
+                    ':img' => $src,
                     ':product_id' => $max
                 ));
             }
@@ -149,6 +154,15 @@ class Product extends DB implements Iproduct
                     ':product_id' => $max,
                     ':content'  => $content,
                     ':title'  => $title
+                ));
+            }
+            //insert category
+
+            foreach ($cate_ids as $cate_id) {
+                $stm2 = $this->db->prepare('INSERT INTO  cate_product (product_id,cate_id) VALUES (:product_id,:cate_id)');
+                $stm2->execute(array(
+                    ':product_id' => $max,
+                    ':cate_id' => $cate_id
                 ));
             }
         } catch (\Throwable $th) {
@@ -176,7 +190,7 @@ class Product extends DB implements Iproduct
             $productName = $payload['productName'];
             $price = $payload['price'];
             $brand_id = $payload['brand_id'];
-            $cate_id = $payload['cate_id'];
+            $cate_ids = $payload['cate_id'];
             $keyword = $payload['keyword'];
             $short_desc = $payload['short_desc'];
             $status = $payload['status'];
@@ -196,7 +210,7 @@ class Product extends DB implements Iproduct
             $discount = $payload['discount'];
             $id = $payload['id'];
             $stm = $this->db->prepare('UPDATE ' . self::tableName . ' 
-             SET  name=:productName,price=:price,brand_id=:brand_id,cate_id=:cate_id,keyword=:keyword
+             SET  name=:productName,price=:price,brand_id=:brand_id,keyword=:keyword
             ,short_desc=:short_desc,status=:status,model=:model,chip=:chip,ram=:ram,card=:card,drive=:drive
             ,display=:display,connect=:connect,vantay=:vantay,operation=:operation,pin=:pin,weight=:weight,
             size=:size,discount=:discount WHERE id = :id');
@@ -204,7 +218,6 @@ class Product extends DB implements Iproduct
                 ':productName' => $productName,
                 ':price' => $price,
                 ':brand_id' => $brand_id,
-                ':cate_id' => $cate_id,
                 ':keyword' => $keyword,
                 ':short_desc' => $short_desc,
                 ':status' => $status,
@@ -243,14 +256,32 @@ class Product extends DB implements Iproduct
                     ':id' => ($iddetail + ($i - 1))
                 ));
             }
-
-            //tra ve so ban ghi
+            //update category of product
+            $stm = $this->db->prepare("SELECT id FROM cate_product WHERE product_id=$id");
+            $stm->execute();
+            $idCate_product = $stm->fetch();
+            $idCate_product = $idCate_product['id'];
+            for ($i =0; $i <= 3; $i++) {
+                $cate_id = $cate_ids[$i];
+                $stmcontent = $this->db->prepare('UPDATE cate_product
+                SET  cate_id=:cate_id
+                 WHERE id = :id');
+                $stmcontent->execute(array(
+                    ':cate_id' => $cate_id,
+                    ':id' => ($idCate_product + $i)
+                ));
+            }
         } catch (\Throwable $th) {
             echo $th->getMessage();
-        }
+        } //tra ve so ban ghi
         return $stm->rowCount();
     }
-
+    function getListByListID($id)
+    {
+        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " WHERE id= $id");
+        $stm->execute();
+        return $stm->fetchAll();
+    }
     function getProductById($id)
     {
         $rows = $this->db->query("SELECT * FROM " . self::tableName . " WHERE id= $id");

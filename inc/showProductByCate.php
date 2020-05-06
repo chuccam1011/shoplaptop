@@ -1,24 +1,26 @@
 <?php
- // hiện trên trang index
+// hiện trên trang index
 $product = new Product();
 $cate = new Cate();
-$cateList = $cate->getAllNoLimit();
+$cateList = $cate->getCateIndex();
 foreach ($cateList as $category) { ?>
-    <?php $listBycate = $cate->getProductByCate($category['id']);//list Product By  cate  ?>
+    <?php
+    $listProducts = $product->getListProductByCategory($category['id']);
+    ?>
     <div class="latest-product">
-        <a href="productByCategory.php?cate=<?php echo $category['id'];?>">
+        <a href="productByCategory.php?cate=<?php echo $category['id']; ?>">
             <h2 class="section-title"><?php echo $category['name']; ?></h2>
         </a>
         <div class="product-carousel">
             <?php
-            foreach ($listBycate as $r) {
+            foreach ($listProducts as $r) {
                 $listImg = $product->getImg($r['id']);
             ?>
                 <div class="single-product">
                     <div class="product-f-image">
                         <img src="<?php echo 'admin/product/uploads/' . $listImg[0]['img'] ?>" alt="">
                         <div class="product-hover">
-                            <a href="?add-to-cart=<?php echo $r['id']?>" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
+                            <a href="?add-to-cart=<?php echo $r['id'] ?>" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                         </div>
                     </div>
 
@@ -27,8 +29,8 @@ foreach ($cateList as $category) { ?>
                     <div class="product-carousel-price">
                         <ins><?php
                                 $sellprice = $r['price'] * (100 - $r['discount']) / 100;
-                                echo number_format($sellprice).' VND' ?></ins>
-                        <del><?php if ($sellprice != $r['price']) echo number_format($r['price']).' VND' ?></del>
+                                echo number_format($sellprice) . ' VND' ?></ins>
+                        <del><?php if ($sellprice != $r['price']) echo number_format($r['price']) . ' VND' ?></del>
                     </div>
                 </div>
             <?php } ?>
