@@ -8,12 +8,14 @@ $product = new Product();
 if (isset($_GET['product_id'])) {
     $id = $_GET['product_id'];
     $productSingle = $product->getProductById($id);
+    //show categorys of product
     $cate = new Cate();
-    // $cateSingle = $cate->getCateById($productSingle['cate_id']);
-    //  var_dump($cateSingle);
+    $cates = $cate->getCatesByProductId($productSingle['id']);
 } else {
     //header('Location:http://localhost/laptopcu');
 }
+
+
 //add product to cart by POST method
 if (isset($_POST['add-to-cart']) && $_POST['add-to-cart'] > 0) {
     $id = $_POST['add-to-cart'];
@@ -82,8 +84,9 @@ if (isset($_POST['add-to-cart']) && $_POST['add-to-cart'] > 0) {
                 <div class="product-content-right">
                     <div class="product-breadcroumb">
                         <a href="index.php">Home</a>
-                        <!-- <a href="productByCategory.php?cate=<?php echo $cateSingle['id'] ?>"><?php echo $cateSingle['name'] ?></a> -->
-                        <a href=""><?php echo $productSingle['name'] ?></a>
+                        <?php foreach ($cates as $category) { ?>
+                                <a href="productByCategory.php?cate=<?php echo $category['id']; ?>"><?php echo $category['name']; ?></a> 
+                        <?php } ?>
                     </div>
                     <?php $listImg = $product->getImg($productSingle['id']);
                     ?>
@@ -133,7 +136,7 @@ if (isset($_POST['add-to-cart']) && $_POST['add-to-cart'] > 0) {
 
                                 <div class="product-inner-category">
                                     <!-- <p>Category: <a href=""><?php  ?></a>. -->
-                                    Keyword: <a href="?seach=<?php echo $productSingle['keyword'] ?> "><?php echo $productSingle['keyword'] ?></a>
+                                    Keyword: <a href="search.php?search_key=<?php echo $productSingle['keyword'] ?> "><?php echo $productSingle['keyword'] ?></a>
                                 </div>
 
                                 <div role="tabpanel">

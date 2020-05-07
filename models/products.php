@@ -19,10 +19,28 @@ class Product extends DB implements Iproduct
         $max = $result->fetchColumn();
         echo $max;
     }
-    //SELECT * FROM product p INNER JOIN cate_product cp ON cp.product_id= p.id INNER JOIN category c ON c.id= cp.cate_id WHERE cp.cate_id=3 ORDER BY p.id DESC
+    //SELECT p.id, p.name,p.price,p.discount FROM product p INNER JOIN cate_product cp ON cp.product_id= p.id INNER JOIN category c ON c.id= cp.cate_id WHERE cp.cate_id=3 ORDER BY p.id DESC
     function getListProductByCategory($cate_id)
     {
         $stm = $this->db->prepare("SELECT p.id, p.name,p.price,p.discount FROM product p INNER JOIN cate_product cp ON cp.product_id= p.id INNER JOIN category c ON c.id= cp.cate_id WHERE cp.cate_id=$cate_id ORDER BY p.id DESC");
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+    function getListProductByCategorys($cate_ids)
+    {
+        $conditions = '';
+        for ($i = 0; $i < count($cate_ids); $i++) {
+
+            $condition = ' cp.cate_id=' . "$cate_ids[$i] ";
+            if ($i == count($cate_ids) - 1) {
+            } else {
+                $condition = $condition . ' OR ';
+            }
+            $conditions = $conditions . $condition;
+        }
+      
+        $stm = $this->db->prepare("SELECT p.id, p.name,p.price,p.discount FROM product p INNER JOIN cate_product cp ON cp.product_id= p.id INNER JOIN category c ON c.id= cp.cate_id WHERE 
+        " . $conditions . " ORDER BY p.id DESC");
         $stm->execute();
         return $stm->fetchAll();
     }
@@ -261,7 +279,7 @@ class Product extends DB implements Iproduct
             $stm->execute();
             $idCate_product = $stm->fetch();
             $idCate_product = $idCate_product['id'];
-            for ($i =0; $i <= 3; $i++) {
+            for ($i = 0; $i <= 3; $i++) {
                 $cate_id = $cate_ids[$i];
                 $stmcontent = $this->db->prepare('UPDATE cate_product
                 SET  cate_id=:cate_id

@@ -11,14 +11,18 @@ include_once('./models/users.php') ?>
 
 <body>
     <?php
-    $users = new Users();
-    $arr=array(
+    $cate_ids = array(1);
+    $conditions = '';
+    for ($i = 0; $i < count($cate_ids); $i++) {
 
-        'username'=>'chuc',
-        'password'=>'1'
-    );
-    var_dump($users->checkLogin($arr));
-
+        $condition = ' cp.cate_id=' . "$cate_ids[$i] ";
+        if ($i == count($cate_ids) - 1) {
+        } else {
+            $condition = $condition . ' AND ';
+        }
+        $conditions = $conditions . $condition;
+    }
+    echo $conditions;
     ?>
 </body>
 

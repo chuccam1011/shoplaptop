@@ -8,30 +8,43 @@ $cates = new Cate();
 //get  list  category
 $cateslist = $cates->getAllnoLimit();
 $list = array();
+$cate_ids = array(1);
 //get  list  products by category
-if (isset($_GET['cate_id'])) {
-    $cate_id = $_GET['cate_id'];
-    $list = $cates->getProductByCate($cate_id);
+if (isset($_POST['cate_id'])) {
+    $cate_ids = $_POST['cate_id'];
+    // var_dump($cate_ids);
+    $list = $products->getListProductByCategorys($cate_ids);
     // var_dump($list);
 }
-
-
+function prinCheckCate($category, $cate_ids)
+{   //neu  co id category_id trong danh  sach cate_Ids lay  ve tu POST in laf  checked
+    foreach ($cate_ids as $cate_id) {
+        if ($category == $cate_id) {
+            echo 'checked';
+        }
+    }
+}
 
 ?>
 <div class="container">
     <div class="row">
-
-        <div class="col-md-4">
+        <div class="col-md-3">
             <!-- list category -->
-            <ul>
 
-                <?php foreach ($cateslist as $category) { ?>
-                    <li><a href="?cate_id=<?php echo $category['id']; ?>"><?php echo $category['name']; ?></a></li>
-                <?php } ?>
+            <ul>
+                <form action="" method="post">
+                    <?php foreach ($cateslist as $category) { ?>
+                        <li>
+                            <input <?php prinCheckCate($category['id'], $cate_ids) ?> type="checkbox" name="cate_id[]" value="<?php echo $category['id']; ?>">
+                            <label for=""><?php echo $category['name']; ?></label>
+                        </li>
+                    <?php } ?>
+                    <input type="submit" value="Lọc (Hoặc)">
+                </form>
             </ul>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-7">
             <!-- list  products -->
             <?php if ($list == NULL) echo '<div class="alert alert-primary" role="alert">Không có sản phẩm nào</div>' ?>
             <?php foreach ($list as $product) { ?>
@@ -52,13 +65,9 @@ if (isset($_GET['cate_id'])) {
                         </div>
                     </div>
                 </div>
-
             <?php  } ?>
-
         </div>
-
     </div>
-
 </div>
 
 <?php

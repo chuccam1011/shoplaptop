@@ -9,25 +9,27 @@ include_once("inc/top.php");
 $products = new Product();
 $pdo = new DB();
 $pdo = $pdo->getPDO();
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-try {
-    if (isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) {
-        $page = $_GET['page'];
-    } else {
-        $page = 1;
-    }
-    $count = 10;
-    $offset = ($page - 1) * $count;
-    $list = $products->getAll($offset, $count);
-} catch (PDOException $e) {
-    echo $e->getMessage();
-}
-// 
 $cates = new Cate();
 if (isset($_GET['cate']) && is_numeric($_GET['cate'])) {
     $id = $_GET['cate'];
     $cate = $cates->getCateById($id);
+    $list = $products->getListProductByCategory($id);
 }
+// $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// try {
+//     if (isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) {
+//         $page = $_GET['page'];
+//     } else {
+//         $page = 1;
+//     }
+//     $count = 10;
+//     $offset = ($page - 1) * $count;
+//   
+// } catch (PDOException $e) {
+//     echo $e->getMessage();
+// }
+// // 
+
 //
 ?>
 <div class="product-big-title-area">
@@ -69,14 +71,11 @@ if (isset($_GET['cate']) && is_numeric($_GET['cate'])) {
             <?php  } ?>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
             <?php
             //lau so bnả ghi 
-            $id = $_GET['cate'];
-            $row = $pdo->query("select count(*) as count from product WHERE cate_id=$id");
-            foreach ($row as $r) {
-                $allRows = $r['count'];
-            }
+            $cate_id = $_GET['cate'];
+            
             $pageTotal = ceil($allRows / $count); //11/5 = 2.2 xấp xỉ 3 -> 2 trang
 
             ?>
@@ -105,7 +104,7 @@ if (isset($_GET['cate']) && is_numeric($_GET['cate'])) {
                     </nav>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 

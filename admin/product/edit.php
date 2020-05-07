@@ -21,7 +21,9 @@ if (isset($_GET['id'])) {
         $obj = $product->getProductById($id);
         //get  cate by product id
         $catesOfProduct = $cate->getCatesByProductId($id);
-        // var_dump($catesOfProduct);
+        if ($catesOfProduct == NULL) {
+            $catesOfProduct = array(0, 0, 0);
+        }
     } else {
         header('Location:index.php');
     }
@@ -72,7 +74,7 @@ if (isset($_POST['submit'])) {
                 <label for="staticEmail" class="col-sm-2 col-form-label">Thương Hiệu</label>
                 <div class="col-sm-10">
                     <select name="brand_id">
-                     
+
                         <?php foreach ($listbrand as $brand) {
                         ?>
                             <option <?php if ($brand['id'] == $obj['brand_id']) echo 'selected'; ?> value="<?php echo $brand['id']  ?>"><?php echo $brand['name'] ?></option>
@@ -109,7 +111,7 @@ if (isset($_POST['submit'])) {
                 <label for="staticEmail" class="col-sm-2 col-form-label">The Loai</label>
                 <div class="col-sm-10">
                     <select name="cate_id[]">
-                    <option value="0">Chon the loai</option>
+                        <option value="0">Chon the loai</option>
                         <?php foreach ($listcate as $cate) {
                         ?>
                             <option <?php if ($cate['id'] ==  $catesOfProduct[2]['cate_id']) echo 'selected'; ?> value="<?php echo $cate['id'];  ?>"><?php echo $cate['name'] ?></option>
