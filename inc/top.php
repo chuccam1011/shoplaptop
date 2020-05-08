@@ -112,21 +112,21 @@ foreach ($cart as $item) {
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="shop.php">Tất cả sản phẩm</a></li>
-                        <!-- <li><a href="cart.php">Giỏ hàng</a></li> -->
-                        <!-- <li><a href="category.php">Category</a></li> -->
-                        <li><a href="category.php?cate_id=8">Laptop Mới</a></li>
-                        <li><a href="category.php?cate_id=7">Laptop Cũ</a></li>
-                        <li><a href="#">Linh Kiện</a></li>
                         <li><a href="category.php">Danh Mục Sản Phẩm</a></li>
-                        <li><a href="brand.php">Hang SX</a></li>
-                        
-                        <li>
-                            <form style="margin-top: 10px" action="search.php" method="gets">
+                        <li><a href="brand.php">Hãng Sản Xuất</a></li>
+                        <li><a href="#">Linh Kiện</a></li>
+                        <!-- <li>
+                            <form style="margin-top: 10px" action="search.php" method="get">
                                 <input type="text" name="search_key" id="" required>
                                 <input type="submit" name="search" value="Tìm Kiếm">
                             </form>
+                        </li> -->
+                        <li>
+                            <form action="search.php" method="get" style="margin-top: 10px" class="form-inline my-2 my-lg-0">
+                                <input class="form-control mr-sm-2" type="search" name="search_key" placeholder="Nhap tu khoa.." aria-label="Search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" name="" type="submit">Tìm Kiếm</button>
+                            </form>
                         </li>
-
                     </ul>
                 </div>
             </div>
