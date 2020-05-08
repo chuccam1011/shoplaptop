@@ -3,17 +3,19 @@ include_once("inc/head.php");
 include_once("inc/top.php");
 ?>
 <?php
+// include_once('inc/filter.php');
 $products = new Product();
 $cates = new Cate();
 //get  list  category
 $cateslist = $cates->getAllnoLimit();
-$list = array();
+$listProducts = array();
 $cate_ids = array(1);
 //get  list  products by category
+
 if (isset($_POST['cate_id'])) {
     $cate_ids = $_POST['cate_id'];
     // var_dump($cate_ids);
-    $list = $products->getListProductByCategorys($cate_ids);
+    $listProducts = $products->getListProductByCategorys($cate_ids, '');
     // var_dump($list);
 }
 function prinCheckCate($category, $cate_ids)
@@ -26,6 +28,7 @@ function prinCheckCate($category, $cate_ids)
 }
 
 ?>
+
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -46,8 +49,8 @@ function prinCheckCate($category, $cate_ids)
 
         <div class="col-md-7">
             <!-- list  products -->
-            <?php if ($list == NULL) echo '<div class="alert alert-primary" role="alert">Không có sản phẩm nào</div>' ?>
-            <?php foreach ($list as $product) { ?>
+            <?php if ($listProducts == NULL) echo '<div class="alert alert-primary" role="alert">Không có sản phẩm nào</div>' ?>
+            <?php foreach ($listProducts as $product) { ?>
                 <?php $listImg = $products->getImg($product['id']); ?>
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">

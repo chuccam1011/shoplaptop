@@ -32,28 +32,36 @@ try {
         </div>
     </div>
 </div>
-
+<?php
+include_once('inc/filter.php');
+if (isset($conditions) && $conditions != '') {
+    //   echo $conditions;
+    $listProductsFilter = $products->getProductByFilter($conditions);
+    $listProducts = $listProductsFilter;
+} else {
+    $listProducts = $list;
+}
+?>
 
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
     <div class="container">
         <div class="row">
-            <?php foreach ($list as $product) { ?>
+            <?php foreach ($listProducts as $product) { ?>
                 <?php $listImg = $products->getImg($product['id']); ?>
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">
                         <div class="product-upper">
-                            <img  width="300" height="300" alt="IMG" class="shop_thumbnail" src="<?php echo 'admin/product/uploads/' . $listImg[1]['img'] ?>" alt="<?php echo $product['name'] ?>">
+                            <img width="300" height="300" alt="IMG" class="shop_thumbnail" src="<?php echo 'admin/product/uploads/' . $listImg[1]['img'] ?>" alt="<?php echo $product['name'] ?>">
                         </div>
                         <h2><a href="single-product.php?product_id=<?php echo $product['id']; ?>"><?php echo $product['name'] ?></a></h2>
                         <div class="product-carousel-price">
                             <ins><?php $sellprice = $product['price'] * (100 - $product['discount']) / 100;
-                                    echo number_format($sellprice).' VND' ?></ins>
-                            <del><?php if ($sellprice != $product['price']) echo number_format($product['price']).' VND' ?></del>
+                                    echo number_format($sellprice) . ' VND' ?></ins>
+                            <del><?php if ($sellprice != $product['price']) echo number_format($product['price']) . ' VND' ?></del>
                         </div>
                         <div class="product-option-shop">
-                            <a class="add_to_cart_button" data-quantity="1"" rel="nofollow" 
-                            href="?add-to-cart=<?php echo $product['id'] ?>">Thêm vào giỏ</a>
+                            <a class="add_to_cart_button" data-quantity="1"" rel=" nofollow" href="?add-to-cart=<?php echo $product['id'] ?>">Thêm vào giỏ</a>
                         </div>
                     </div>
                 </div>
@@ -62,9 +70,16 @@ try {
 
         </div>
 
+
+
         <div class="row">
             <?php
-            $row = $pdo->query('select count(*) as count from product');
+            if (isset($conditions) && $conditions != '') {
+                $row = $pdo->query('select count(*) as count  from product WHERE ' . $conditions);
+            } else {
+                $row = $pdo->query('select count(*) as count  from product');
+            }
+
             foreach ($row as $r) {
                 $allRows = $r['count'];
             }

@@ -26,8 +26,8 @@ class Product extends DB implements Iproduct
         $stm->execute();
         return $stm->fetchAll();
     }
-    function getListProductByCategorys($cate_ids)
-    {
+    function getListProductByCategorys($cate_ids,$conditionsFilter)
+    {   
         $conditions = '';
         for ($i = 0; $i < count($cate_ids); $i++) {
 
@@ -47,6 +47,12 @@ class Product extends DB implements Iproduct
     function getAll($offset, $count)
     {
         $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " LIMIT $offset,$count");
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+    function getProductByFilter($conditions)
+    {
+        $stm = $this->db->prepare("SELECT * FROM " . self::tableName .' WHERE '.$conditions. " ORDER BY id DESC");
         $stm->execute();
         return $stm->fetchAll();
     }
