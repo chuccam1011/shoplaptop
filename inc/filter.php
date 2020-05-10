@@ -4,6 +4,7 @@ $product = new Product();
 $conditions = '';
 if (isset($_POST['filter'])) {
     $filters = array();
+    $alert = '';
     foreach ($_POST as $key => $value) {
         if ($value != '') {
             $filters[$key] = $value;
@@ -15,9 +16,12 @@ if (isset($_POST['filter'])) {
         $i++;
         if ($i == count($filters)) {
             $condition = $key . ' LIKE ' . "'" . '%' . $value . '%' . "'";
+            $alert = $alert . $key . ' = '  . $value . ' ';
         } else {
             $condition = $key . ' LIKE ' . "'" . '%' . $value . '%' . "'" . ' AND ';
+            $alert = $alert . $key . ' = '  . $value . ' , ';
         }
+
         $conditions = $conditions . $condition;
     }
 }
@@ -31,20 +35,21 @@ if (isset($_POST['filter'])) {
                     <th>RAM</th>
                     <th>VGA</th>
                     <th>Ổ Cưng</th>
+                    <th>Màn hình</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td scope="row"><select name="chip" id="">
-                            <option value="">chon</option>
-                            <option value="i3">Intel core I3</option>
+                            <option value="">Chọn</option>
+                            <option value="i3">Intel core i3</option>
                             <option value="i5">Intel core i5</option>
                             <option value="i7">Intel core i7</option>
                             <option value="i9">Intel core i9</option>
                         </select>
                     </td>
                     <td> <select name="ram" id="">
-                            <option value="">chon</option>
+                            <option value="">Chọn</option>
                             <option value="4">4 GB</option>
                             <option value="8">8 GB</option>
                             <option value="12">12 GB</option>
@@ -52,16 +57,24 @@ if (isset($_POST['filter'])) {
                         </select>
                     </td>
                     <td> <select name="card" id="">
-                            <option value="">chon</option>
+                            <option value="">Chọn</option>
+                            <option value="GTX">GTX</option>
+                            <option value="1050">GTX 1050</option>
                             <option value="1060">GTX 1060</option>
                             <option value="1070">GTX 1070</option>
-                            <option value="1080">GTX 1080</option>
+                            <option value="AMD">AMD </option>
                         </select>
                     </td>
                     <td> <select name="drive" id="">
-                            <option value="">chon</option>
+                            <option value="">Chọn</option>
                             <option value="ssd">SSD</option>
                             <option value="hdd">HDD</option>
+                        </select>
+                    </td>
+                    <td> <select name="display" id="">
+                            <option value="">Chọn</option>
+                            <option value="15">15 inch</option>
+                            <option value="17">17 inch</option>
                         </select>
                     </td>
                 </tr>

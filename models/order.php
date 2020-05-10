@@ -8,21 +8,31 @@ class Order extends DB
         parent::__construct();
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-
     function getAll($offset, $count)
     {
         $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " LIMIT $offset,$count");
         $stm->execute();
         return $stm->fetchAll();
     }
-    function getOrderProducts($id)
+    function getOrder($offset, $count)
     {
-
+        $stm = $this->db->prepare('SELECT o.id,o.time,o.status,o.notes,u.username FROM ordered o INNER JOIN user u ON u.id = o.user_id
+        ' . " LIMIT $offset,$count");
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+    function getOrderProducts($id) //get products of  order by user
+    {
         $stm = $this->db->prepare("SELECT * FROM " . ' products_orders WHERE order_id=:id');
         $stm->execute(array(':id' => $id));
         return $stm->fetchAll();
     }
-
+    function getProductListInOrder($id_order)
+    {
+        $stm = $this->db->prepare("SELECT p.name,p.price,p.id,po.quantity FROM product p INNER JOIN products_orders po ON po.product_id=p.id INNER JOIN ordered o ON o.id=po.order_id "." WHERE o.id=:id");
+        $stm->execute(array(':id' => $id_order));
+        return $stm->fetchAll();
+    }
     function insert($payload, $cart)
     {
         try {
@@ -68,34 +78,16 @@ class Order extends DB
         $this->db->query("DELETE FROM " . self::tableName . " WHERE id = " . $id);
     }
 
-    function update($payload) //for admin update status
+    function update($id, $status) //for admin update status
     {
-        // $stm = $this->db->prepare('UPDATE ' . self::tableName . ' 
-        //     SET address = :address, phone = :phone WHERE id = :id');
-        //     $stm->execute(array(':address' => $address, ':phone' => $phone, ':id' => $id));
+
         try {
-            $id = $payload['id'];
-            $username = $payload['username'];
-            $address = $payload['address'];
-            $phone = $payload['phone'];
-            $city = $payload['city'];
-            $password = $payload['password'];
-            $full_name = $payload['full_name'];
-            $dob = $payload['dob'];
-            $email = $payload['email'];
+
             $stm = $this->db->prepare('UPDATE  ' .
                 self::tableName .
-                ' SET username=:username,address=:address,phone=:phone
-                ,password=:password,email=:email,city=:city,full_name=:full_name,dob=:dob WHERE id = :id');
+                ' SET status=:status WHERE id = :id');
             $stm->execute(array(
-                ':username' => $username,
-                ':address' => $address,
-                ':phone' => $phone,
-                ':email' => $email,
-                ':password' => md5($password),
-                ':city' => $city,
-                ':full_name' => $full_name,
-                ':dob' => $dob,
+                ':status' => $status,
                 ':id' => $id
             ));
         } catch (\Throwable $th) {
@@ -138,19 +130,12 @@ class Order extends DB
         return $stm->rowCount();
     }
 
-    function getById($id)
+    function getOrderById($id)
     {
         $rows = $this->db->query("SELECT * FROM " . self::tableName . " WHERE id= $id");
         foreach ($rows as $r) {
             $row  = $r;
         }
         return $r;
-    }
-    function getByUsername($username)
-    {
-        $stm =  $this->db->prepare('SELECT * FROM ' . self::tableName . " WHERE username = :username ");
-        $stm->setFetchMode(PDO::FETCH_ASSOC);
-        $stm->execute(array(':username' => $username));
-        return  $stm->fetch();
     }
 }

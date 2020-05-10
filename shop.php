@@ -36,6 +36,7 @@ try {
 include_once('inc/filter.php');
 if (isset($conditions) && $conditions != '') {
     //   echo $conditions;
+
     $listProductsFilter = $products->getProductByFilter($conditions);
     $listProducts = $listProductsFilter;
 } else {
@@ -47,6 +48,9 @@ if (isset($conditions) && $conditions != '') {
     <div class="zigzag-bottom"></div>
     <div class="container">
         <div class="row">
+            <?php if (isset($alert) && $alert != '')
+                echo '<div class="alert alert-primary" role="alert">' .'Két quả lọc  cho : '. $alert . '</div>';
+            ?>
             <?php foreach ($listProducts as $product) { ?>
                 <?php $listImg = $products->getImg($product['id']); ?>
                 <div class="col-md-3 col-sm-6">
@@ -70,8 +74,7 @@ if (isset($conditions) && $conditions != '') {
 
         </div>
 
-
-
+        <!-- show pagecontrol -->
         <div class="row">
             <?php
             if (isset($conditions) && $conditions != '') {

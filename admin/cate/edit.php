@@ -1,5 +1,4 @@
 <?php
-
 require_once('./../commons/head.php');
 require_once('./../../models/cate.php');
 if (isset($_SESSION['success'])) {

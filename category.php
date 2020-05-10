@@ -9,7 +9,7 @@ $cates = new Cate();
 //get  list  category
 $cateslist = $cates->getAllnoLimit();
 $listProducts = array();
-$cate_ids = array(1);
+$cate_ids = array();
 //get  list  products by category
 
 if (isset($_POST['cate_id'])) {
