@@ -34,14 +34,19 @@ try {
 </div>
 <?php
 include_once('inc/filter.php');
-if (isset($conditions) && $conditions != '') {
-    //   echo $conditions;
+if (isset($_POST['sort'])) {
+    $sort = $_POST['sort_key'];
+} else {
+    $sort = '';
+}
+if (isset($conditions) && isset($_SESSION['condition'])) {
 
-    $listProductsFilter = $products->getProductByFilter($conditions);
+    $listProductsFilter = $products->getProductByFilter($_SESSION['condition'], $sort);
     $listProducts = $listProductsFilter;
 } else {
     $listProducts = $list;
 }
+
 ?>
 
 <div class="single-product-area">
@@ -49,7 +54,7 @@ if (isset($conditions) && $conditions != '') {
     <div class="container">
         <div class="row">
             <?php if (isset($alert) && $alert != '')
-                echo '<div class="alert alert-primary" role="alert">' .'Két quả lọc  cho : '. $alert . '</div>';
+                echo '<div class="alert alert-primary" role="alert">' . 'Két quả lọc  cho : ' . $alert . '</div>';
             ?>
             <?php foreach ($listProducts as $product) { ?>
                 <?php $listImg = $products->getImg($product['id']); ?>

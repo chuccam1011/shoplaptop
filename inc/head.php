@@ -27,8 +27,14 @@ switch ($actual_link) {
   case '/laptopcu/checkout.php':
     $_SESSION['title'] = 'Check out';
     break;
-  case '/laptopcu/checkout.php':
-    $_SESSION['title'] = 'Check out';
+  case '/laptopcu/category.php':
+    $_SESSION['title'] = 'Danh mục Sản Phẩm';
+    break;
+  case '/laptopcu/brand.php':
+    $_SESSION['title'] = 'Thương hiệu';
+    break;
+  case '/laptopcu/orders.php':
+    $_SESSION['title'] = 'Danh Sách Đơn Hàng';
     break;
   default:
     $_SESSION['title'] = 'Shop Laptop';
@@ -78,7 +84,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == true) {
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="icon" href="faicon.png">
-  
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- <link rel="stylesheet" type="text/css" href="login.css"> -->
 

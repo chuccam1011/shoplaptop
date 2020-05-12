@@ -1,12 +1,13 @@
 <?php
 $product = new Product();
+
 // make condition filter to in WHERE DB
 $conditions = '';
 if (isset($_POST['filter'])) {
     $filters = array();
     $alert = '';
     foreach ($_POST as $key => $value) {
-        if ($value != '') {
+        if ($key != 'sort' && $value != '') {
             $filters[$key] = $value;
         }
     }
@@ -24,7 +25,9 @@ if (isset($_POST['filter'])) {
 
         $conditions = $conditions . $condition;
     }
+    $_SESSION['condition'] = $conditions;
 }
+if (isset($_POST['reset'])) $_SESSION['condition'] = '';
 ?>
 <div class="container">
     <form method="post">
@@ -36,6 +39,7 @@ if (isset($_POST['filter'])) {
                     <th>VGA</th>
                     <th>Ổ Cưng</th>
                     <th>Màn hình</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -71,17 +75,30 @@ if (isset($_POST['filter'])) {
                             <option value="hdd">HDD</option>
                         </select>
                     </td>
-                    <td> <select name="display" id="">
+                    <td>
+                        <select name="display" id="">
                             <option value="">Chọn</option>
                             <option value="15">15 inch</option>
                             <option value="17">17 inch</option>
                         </select>
                     </td>
                 </tr>
-
             </tbody>
         </table>
-        <button type="submit" value="" name="filter">Lọc</button>
+        <button type="submit" name="filter">Lọc</button>
+        <button type="reset" name="reset">Xoa Loc</button>
         <hr>
+    </form>
+    <form action="" method="post">
+        <select name="sort_key" id="">
+            <option value="">Chọn</option>
+            <option value="tang">Giá tăng dần</option>
+            <option value="giam">Giá giảm dần</option>
+            <option value="new">Mới nhất trước</option>
+            <option value="dis_max">Giảm gia nhiều nhất trước</option>
+            <option value="topsell">Bán chạy nhất</option>
+        </select>
+        <button class="btn btn-primary" name="sort" type="submit">Sap xep</button>
+        <!-- <button type="reset" name="reset">Xoa Loc</button> -->
     </form>
 </div>

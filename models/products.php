@@ -26,8 +26,8 @@ class Product extends DB implements Iproduct
         $stm->execute();
         return $stm->fetchAll();
     }
-    function getListProductByCategorys($cate_ids,$conditionsFilter)
-    {   
+    function getListProductByCategorys($cate_ids, $conditionsFilter)
+    {
         $conditions = '';
         for ($i = 0; $i < count($cate_ids); $i++) {
 
@@ -38,7 +38,7 @@ class Product extends DB implements Iproduct
             }
             $conditions = $conditions . $condition;
         }
-      
+
         $stm = $this->db->prepare("SELECT p.id, p.name,p.price,p.discount FROM product p INNER JOIN cate_product cp ON cp.product_id= p.id INNER JOIN category c ON c.id= cp.cate_id WHERE 
         " . $conditions . " ORDER BY p.id DESC");
         $stm->execute();
@@ -50,9 +50,33 @@ class Product extends DB implements Iproduct
         $stm->execute();
         return $stm->fetchAll();
     }
-    function getProductByFilter($conditions)
+    function getProductByFilter($conditions, $sort)
     {
-        $stm = $this->db->prepare("SELECT * FROM " . self::tableName .' WHERE '.$conditions. " ORDER BY id DESC");
+        $sortsql = '';
+        if ($conditions == '') $conditions = 1;
+        switch ($sort) {
+            case 'new':
+                $sortsql = 'time_add DESC';
+                break;
+            case 'giam':
+                $sortsql = 'price ASC';
+                break;
+            case 'tang':
+                $sortsql = 'price DESC';
+                break;
+            case 'dis_max':
+                $sortsql = 'discount DESC';
+                break;
+            case 'topsell':
+                $sortsql = 'selled  DESC';
+                break;
+
+            default:
+                $sortsql = 'id desc';
+                break;
+        }
+
+        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . ' WHERE ' . $conditions . " ORDER BY " . $sortsql);
         $stm->execute();
         return $stm->fetchAll();
     }
