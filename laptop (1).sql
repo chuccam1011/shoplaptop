@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 13, 2020 at 05:29 PM
+-- Generation Time: May 13, 2020 at 05:49 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -232,7 +232,7 @@ INSERT INTO `img` (`id`, `img`, `product_id`) VALUES
 
 CREATE TABLE `ordered` (
   `id` int(11) NOT NULL,
-  `time` date NOT NULL DEFAULT current_timestamp(),
+  `time` date NOT NULL,
   `status` int(11) DEFAULT 0,
   `user_id` int(11) NOT NULL,
   `notes` varchar(300) COLLATE utf32_unicode_ci NOT NULL,
@@ -277,7 +277,7 @@ CREATE TABLE `product` (
   `size` varchar(200) COLLATE utf32_unicode_ci NOT NULL,
   `discount` int(5) DEFAULT 0,
   `selled` int(10) DEFAULT 0,
-  `time_add` date NOT NULL DEFAULT current_timestamp(),
+  `time_add` date NOT NULL,
   `quantity_product` int(11) DEFAULT 5
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
