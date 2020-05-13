@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2020 at 05:27 PM
+-- Generation Time: May 13, 2020 at 05:29 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -244,8 +244,10 @@ CREATE TABLE `ordered` (
 --
 
 INSERT INTO `ordered` (`id`, `time`, `status`, `user_id`, `notes`, `extra_address`) VALUES
-(11, '2020-05-01', 1, 12, '', ''),
-(12, '2020-05-01', 0, 12, 'dahjldhaildhjiopạuwipo  ', '');
+(11, '2020-05-01', 2, 12, '', ''),
+(12, '2020-05-01', 2, 12, 'dahjldhaildhjiopạuwipo  ', ''),
+(13, '2020-05-13', 2, 13, '', ''),
+(14, '2020-05-13', 2, 13, '', '');
 
 -- --------------------------------------------------------
 
@@ -274,29 +276,27 @@ CREATE TABLE `product` (
   `weight` float NOT NULL,
   `size` varchar(200) COLLATE utf32_unicode_ci NOT NULL,
   `discount` int(5) DEFAULT 0,
-  `selled` int(10) DEFAULT NULL,
+  `selled` int(10) DEFAULT 0,
   `time_add` date NOT NULL DEFAULT current_timestamp(),
-  `quantity` int(11) DEFAULT NULL
+  `quantity_product` int(11) DEFAULT 5
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `price`, `brand_id`, `keyword`, `short_desc`, `status`, `model`, `chip`, `ram`, `card`, `drive`, `display`, `connect`, `vantay`, `operation`, `pin`, `weight`, `size`, `discount`, `selled`, `time_add`, `quantity`) VALUES
-(2, '[Mới 100% Full Box] Laptop Asus Pro P1440FA-FQ0934', 120000, 9, '[Mới 100% Full Box] ', 'Chính hãng Asus, SIÊU BỀN đạt tiêu chuẩn quân sự Mỹ, chip đời 8, GIÁ RẺ, bảo hành 24 tháng', 1, 'P1440FA-FQ0934 ', 'Intel Core i3 - 8145U', '5', 'Card onboard Intel UHD Graphics 620', 'HDD 500GB + SSD 180GB (Quà tặng)', '14 Inch HD', 'jack tai nghe, VGA port, Type-A USB2.0, 3xType-A USB 3.2 (Gen 1), RJ45 LAN jack for LAN insert, HDMI, SD Card, Cổng sạc', 1, 'win 10', 5, 2, '20*30*50', 0, NULL, '2020-04-20', NULL),
-(3, 'Laptop Cũ Dell Precision M6800 Intel Core i7 MQ', 14500000, 10, 'Laptop Cũ ', 'Tặng thẻ Gold Member trị giá 3.000.000 đồng', 1, 'M6800', 'Intel Core i7 - 4800MQ', '8', 'AMD FirePro M6100M', ' SSD 120GB +', '17,3 Inch Full HD', 'wifi, bt 5.0', 0, 'WIN 10', 3, 3, '50*50*30', 0, NULL, '2020-04-05', NULL),
-(4, '[Mới 100% Full box] Lenovo Legion Y540 15IRH 81SY0', 19990000, 11, '[Mới 100% Full box]', 'Laptop gaming chính hãng Lenovo Việt Nam. Cấu hình khủng: Intel Core i5 9300H, RAM 8GB DDR4, Card đồ họa NVidia GTX 1650 4GB', 1, 'Y540 15IRH 81SY0037VN', 'Intel Core i5 9300H', '8', 'Nvidia GTX 1650 4GB', 'SSD NVMe 128GB + HDD 1TB', '15.6 Inch Full HD', 'Wifi 802.11 AC + Bluetooth®4.2', 0, 'Win 10', 6, 4, '30*60*20', 0, 3, '2020-04-05', NULL),
-(6, '[Mới 100% Full box] Laptop MSI GF63 Thin 9SC 400VN', 19990000, 11, '[Mới 100% Full box]', 'Laptop gaming mỏng, nhẹ, cấu hình cao Card rời 1650Ti MaxQ Ti. Giá tốt', 1, ' GF63 Thin 9SC 400VN ', 'Intel Core i5 9300H', '8', ' GTX 1650 MaxQ 4GB', 'SSD 256GB NVMe', '15.6 Inch Full HD', 'co', 0, 'Win 10', 10, 4, '30*60*50', 2, 2, '2020-04-12', NULL),
-(7, '[Mới 100% Full Box] Laptop Gaming HP PAVILION GAMI', 20000000, 9, 'Laptop Gaming', 'HP Gaming 2019 giá tốt, card 1650. Tản siêu MÁT Tặng thẻ Gold Member trị giá 3.000.000đ', 1, 'HP PAVILION GAMING 15-DK0231TX', 'Intel Core i5 9300H', '8', 'NVidia GTX 1650 4GB', 'SSD 512GB NVMe (Miễn phí nâng cấp từ HDD 1TB)', '15.6 InchFull HD', 'dadda', 1, '10', 3, 2, '30*30*60', 3, NULL, '2020-04-06', NULL),
-(8, '[Mới 100% Full Box] Laptop Asus Pro P1440FA-FQ0934', 120000, 9, '[Mới 100% Full Box] ', 'Chính hãng Asus, SIÊU BỀN đạt tiêu chuẩn quân sự Mỹ, chip đời 8, GIÁ RẺ, bảo hành 24 tháng', 1, 'P1440FA-FQ0934 ', 'Intel Core i3 - 8145U', '5', 'Card onboard Intel UHD Graphics 620', 'HDD 500GB + SSD 180GB (Quà tặng)', '14 Inch HD', 'jack tai nghe, VGA port, Type-A USB2.0, 3xType-A USB 3.2 (Gen 1), RJ45 LAN jack for LAN insert, HDMI, SD Card, Cổng sạc', 1, 'win 10', 5, 2, '20*30*50', 0, NULL, '2020-04-20', NULL),
-(9, 'Laptop Cũ Dell Precision M6800 Intel Core i7 MQ', 14500000, 10, 'Laptop Cũ ', 'Tặng thẻ Gold Member trị giá 3.000.000 đồng', 1, 'M6800', 'Intel Core i7 - 4800MQ', '8', 'AMD FirePro M6100M', ' SSD 120GB +', '17,3 Inch Full HD', 'wifi, bt 5.0', 0, 'WIN 10', 3, 3, '50*50*30', 0, NULL, '2020-04-05', NULL),
-(10, '[Mới 100% Full box] Lenovo Legion Y540 15IRH 81SY0', 19990000, 11, '[Mới 100% Full box]', 'Laptop gaming chính hãng Lenovo Việt Nam. Cấu hình khủng: Intel Core i5 9300H, RAM 8GB DDR4, Card đồ họa NVidia GTX 1650 4GB', 1, 'Y540 15IRH 81SY0037VN', 'Intel Core i5 9300H', '8', 'Nvidia GTX 1650 4GB', 'SSD NVMe 128GB + HDD 1TB', '15.6 Inch Full HD', 'Wifi 802.11 AC + Bluetooth®4.2', 0, 'Win 10', 6, 4, '30*60*20', 0, 3, '2020-04-05', NULL),
-(11, 'Laptop Gaming HP Omen 15 - Intel Core i7', 18900000, 10, 'Laptop Gaming ', 'Laptop gaming tầm trung tới từ HP Bảo hành 6 tháng', 1, 'Omen 15', 'Intel Core i7 7700HQ', '8', 'Card rời Nvidia GTX 1050 Ti', 'HDD 500GB + SSD 180GB', '15.6 Inch Full HD', 'bt,wifi', 1, 'Win 10', 7, 3, '20*30*55', 0, 1, '2020-04-24', NULL),
-(12, '[Mới 100% Full box] Laptop MSI GF63 Thin 9SC 400VN', 19990000, 11, '[Mới 100% Full box]', 'Laptop gaming mỏng, nhẹ, cấu hình cao Card rời 1650Ti MaxQ Ti. Giá tốt', 1, ' GF63 Thin 9SC 400VN ', 'Intel Core i5 9300H', '8', ' GTX 1650 MaxQ 4GB', 'SSD 256GB NVMe', '15.6 Inch Full HD', 'co', 0, 'Win 10', 10, 4, '30*60*50', 2, 2, '2020-04-12', NULL),
-(13, '[Mới 100% Full Box] Laptop Gaming HP PAVILION GAMI', 20000000, 9, 'Laptop Gaming', 'HP Gaming 2019 giá tốt, card 1650. Tản siêu MÁT Tặng thẻ Gold Member trị giá 3.000.000đ', 1, 'HP PAVILION GAMING 15-DK0231TX', 'Intel Core i5 9300H', '8', 'NVidia GTX 1650 4GB', 'SSD 512GB NVMe (Miễn phí nâng cấp từ HDD 1TB)', '15.6 InchFull HD', 'dadda', 1, '10', 3, 2, '30*30*60', 3, NULL, '2020-04-06', NULL),
-(17, 'da', 2313, 9, 'dasd', 'dad', 1, 'ad', 'adad', 'da', 'sd', 'ad', 'das', 'dad', 1, 'a', 31, 12, 'adasd', 0, NULL, '2020-05-06', NULL),
-(18, 'da', 2313, 9, 'dasd', 'dad', 1, 'ad', 'adad', 'da', 'sd', 'ad', 'das', 'dad', 1, 'a', 31, 12, 'adasd', 0, NULL, '2020-05-06', NULL);
+INSERT INTO `product` (`id`, `name`, `price`, `brand_id`, `keyword`, `short_desc`, `status`, `model`, `chip`, `ram`, `card`, `drive`, `display`, `connect`, `vantay`, `operation`, `pin`, `weight`, `size`, `discount`, `selled`, `time_add`, `quantity_product`) VALUES
+(2, '[Mới 100% Full Box] Laptop Asus Pro P1440FA-FQ0934', 120000, 9, '[Mới 100% Full Box] ', 'Chính hãng Asus, SIÊU BỀN đạt tiêu chuẩn quân sự Mỹ, chip đời 8, GIÁ RẺ, bảo hành 24 tháng', 1, 'P1440FA-FQ0934 ', 'Intel Core i3 - 8145U', '5', 'Card onboard Intel UHD Graphics 620', 'HDD 500GB + SSD 180GB (Quà tặng)', '14 Inch HD', 'jack tai nghe, VGA port, Type-A USB2.0, 3xType-A USB 3.2 (Gen 1), RJ45 LAN jack for LAN insert, HDMI, SD Card, Cổng sạc', 1, 'win 10', 5, 2, '20*30*50', 0, 0, '2020-04-20', 5),
+(3, 'Laptop Cũ Dell Precision M6800 Intel Core i7 MQ', 14500000, 10, 'Laptop Cũ ', 'Tặng thẻ Gold Member trị giá 3.000.000 đồng', 1, 'M6800', 'Intel Core i7 - 4800MQ', '8', 'AMD FirePro M6100M', ' SSD 120GB +', '17,3 Inch Full HD', 'wifi, bt 5.0', 0, 'WIN 10', 3, 3, '50*50*30', 0, 0, '2020-04-05', 80),
+(4, '[Mới 100% Full box] Lenovo Legion Y540 15IRH 81SY0', 19990000, 11, '[Mới 100% Full box]', 'Laptop gaming chính hãng Lenovo Việt Nam. Cấu hình khủng: Intel Core i5 9300H, RAM 8GB DDR4, Card đồ họa NVidia GTX 1650 4GB', 1, 'Y540 15IRH 81SY0037VN', 'Intel Core i5 9300H', '8', 'Nvidia GTX 1650 4GB', 'SSD NVMe 128GB + HDD 1TB', '15.6 Inch Full HD', 'Wifi 802.11 AC + Bluetooth®4.2', 0, 'Win 10', 6, 4, '30*60*20', 0, 3, '2020-04-05', 1),
+(6, '[Mới 100% Full box] Laptop MSI GF63 Thin 9SC 400VN', 19990000, 11, '[Mới 100% Full box]', 'Laptop gaming mỏng, nhẹ, cấu hình cao Card rời 1650Ti MaxQ Ti. Giá tốt', 1, ' GF63 Thin 9SC 400VN ', 'Intel Core i5 9300H', '8', ' GTX 1650 MaxQ 4GB', 'SSD 256GB NVMe', '15.6 Inch Full HD', 'co', 0, 'Win 10', 10, 4, '30*60*50', 2, 2, '2020-04-12', 5),
+(7, '[Mới 100% Full Box] Laptop Gaming HP PAVILION GAMI', 20000000, 9, 'Laptop Gaming', 'HP Gaming 2019 giá tốt, card 1650. Tản siêu MÁT Tặng thẻ Gold Member trị giá 3.000.000đ', 1, 'HP PAVILION GAMING 15-DK0231TX', 'Intel Core i5 9300H', '8', 'NVidia GTX 1650 4GB', 'SSD 512GB NVMe (Miễn phí nâng cấp từ HDD 1TB)', '15.6 InchFull HD', 'dadda', 1, '10', 3, 2, '30*30*60', 3, 0, '2020-04-06', 5),
+(8, '[Mới 100% Full Box] Laptop Asus Pro P1440FA-FQ0934', 120000, 9, '[Mới 100% Full Box] ', 'Chính hãng Asus, SIÊU BỀN đạt tiêu chuẩn quân sự Mỹ, chip đời 8, GIÁ RẺ, bảo hành 24 tháng', 1, 'P1440FA-FQ0934 ', 'Intel Core i3 - 8145U', '5', 'Card onboard Intel UHD Graphics 620', 'HDD 500GB + SSD 180GB (Quà tặng)', '14 Inch HD', 'jack tai nghe, VGA port, Type-A USB2.0, 3xType-A USB 3.2 (Gen 1), RJ45 LAN jack for LAN insert, HDMI, SD Card, Cổng sạc', 1, 'win 10', 5, 2, '20*30*50', 0, 0, '2020-04-20', 5),
+(9, 'Laptop Cũ Dell Precision M6800 Intel Core i7 MQ', 14500000, 10, 'Laptop Cũ ', 'Tặng thẻ Gold Member trị giá 3.000.000 đồng', 1, 'M6800', 'Intel Core i7 - 4800MQ', '8', 'AMD FirePro M6100M', ' SSD 120GB +', '17,3 Inch Full HD', 'wifi, bt 5.0', 0, 'WIN 10', 3, 3, '50*50*30', 0, 0, '2020-04-05', 5),
+(10, '[Mới 100% Full box] Lenovo Legion Y540 15IRH 81SY0', 19990000, 11, '[Mới 100% Full box]', 'Laptop gaming chính hãng Lenovo Việt Nam. Cấu hình khủng: Intel Core i5 9300H, RAM 8GB DDR4, Card đồ họa NVidia GTX 1650 4GB', 1, 'Y540 15IRH 81SY0037VN', 'Intel Core i5 9300H', '8', 'Nvidia GTX 1650 4GB', 'SSD NVMe 128GB + HDD 1TB', '15.6 Inch Full HD', 'Wifi 802.11 AC + Bluetooth®4.2', 0, 'Win 10', 6, 4, '30*60*20', 12, 3, '2020-04-05', 5),
+(11, 'Laptop Gaming HP Omen 15 - Intel Core i7', 18900000, 10, 'Laptop Gaming ', 'Laptop gaming tầm trung tới từ HP Bảo hành 6 tháng', 1, 'Omen 15', 'Intel Core i7 7700HQ', '8', 'Card rời Nvidia GTX 1050 Ti', 'HDD 500GB + SSD 180GB', '15.6 Inch Full HD', 'bt,wifi', 1, 'Win 10', 7, 3, '20*30*55', 0, 1, '2020-04-24', 5),
+(12, '[Mới 100% Full box] Laptop MSI GF63 Thin 9SC 400VN', 19990000, 11, '[Mới 100% Full box]', 'Laptop gaming mỏng, nhẹ, cấu hình cao Card rời 1650Ti MaxQ Ti. Giá tốt', 1, ' GF63 Thin 9SC 400VN ', 'Intel Core i5 9300H', '8', ' GTX 1650 MaxQ 4GB', 'SSD 256GB NVMe', '15.6 Inch Full HD', 'co', 0, 'Win 10', 10, 4, '30*60*50', 2, 2, '2020-04-12', 5),
+(13, '[Mới 100% Full Box] Laptop Gaming HP PAVILION GAMI', 20000000, 9, 'Laptop Gaming', 'HP Gaming 2019 giá tốt, card 1650. Tản siêu MÁT Tặng thẻ Gold Member trị giá 3.000.000đ', 1, 'HP PAVILION GAMING 15-DK0231TX', 'Intel Core i5 9300H', '8', 'NVidia GTX 1650 4GB', 'SSD 512GB NVMe (Miễn phí nâng cấp từ HDD 1TB)', '15.6 InchFull HD', 'dadda', 1, '10', 3, 2, '30*30*60', 3, 0, '2020-04-06', 5);
 
 -- --------------------------------------------------------
 
@@ -318,7 +318,10 @@ CREATE TABLE `products_orders` (
 INSERT INTO `products_orders` (`id`, `product_id`, `order_id`, `quantity`) VALUES
 (24, 3, 11, 10),
 (25, 4, 11, 1),
-(26, 8, 12, 1);
+(26, 8, 12, 1),
+(27, 12, 13, 1),
+(28, 7, 13, 1),
+(29, 11, 14, 1);
 
 -- --------------------------------------------------------
 
@@ -365,7 +368,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `address`, `city`, `dob`, `phone`, `full_name`, `email`) VALUES
-(12, 'chuc', 'c4ca4238a0b923820dcc509a6f75849b', 'HH VN', 'HN', '20-2-2', '032151', 'cam vanw chuwsdddddddd', 'c@d');
+(12, 'chuc', 'c4ca4238a0b923820dcc509a6f75849b', 'HH VN', 'HN', '20-2-2', '032151', 'cam vanw chuwsdddddddd', 'c@d'),
+(13, 'cam', 'c4ca4238a0b923820dcc509a6f75849b', 'AS, CC,CV', 'HCM', '10/11/1997', '0382155564', 'cam van chuc', 'cam@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -481,7 +485,7 @@ ALTER TABLE `img`
 -- AUTO_INCREMENT for table `ordered`
 --
 ALTER TABLE `ordered`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -493,7 +497,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `products_orders`
 --
 ALTER TABLE `products_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `slide`
@@ -505,7 +509,7 @@ ALTER TABLE `slide`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

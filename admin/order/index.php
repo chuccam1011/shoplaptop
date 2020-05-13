@@ -6,13 +6,14 @@ if (isset($_SESSION['success'])) {
 }
 $order = new Order();
 //updat e status of order
-
+$count = 3;
+if (isset($_GET['view_more'])) $count += 5;
 if (isset($_GET['update_order_status'])) {
     $id = $_GET['id'];
     $status = $_GET['update_order_status'];
     //get details order to  update in tabnle product
     $listProducts = $order->getProductListInOrder($id);
-    $result = $order->update($id, $status, $listProducts,$_GET['status']);
+    $result = $order->update($id, $status, $listProducts, $_GET['status']);
     if ($result == 1) {
         $_SESSION['success'] = 'Cap nhat thanh cong đơn hàng #' . $id;
     }
@@ -28,6 +29,7 @@ if (isset($_GET['update_order_status'])) {
 
     <div class="container">
         <?php if (isset($_SESSION['success'])) echo '<div class="alert alert-primary" role="alert">' . $_SESSION['success'] . '</div>'; ?>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -40,9 +42,9 @@ if (isset($_GET['update_order_status'])) {
                 </tr>
             </thead>
             <br>
-            <tbody>
+            <tbody  id="myTable">
                 <?php
-                $list = $order->getOrder(0, 20);
+                $list = $order->getOrder(0, $count);
                 foreach ($list as $r) {
                 ?>
                     <tr>
@@ -92,8 +94,18 @@ if (isset($_GET['update_order_status'])) {
 
             </tbody>
         </table>
+        <a class="" href="?view_more">Xem Them</a>
     </div>
-</body>
-<?php
-require_once('./../commons/footer.php');
-?>
+    <script>
+        $(document).ready(function() {
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <?php
+    require_once('./../commons/footer.php');
+    ?>

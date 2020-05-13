@@ -8,16 +8,16 @@ class Order extends DB
         parent::__construct();
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-    function getAll($offset, $count)
+    function getListOrderByUser($user_id,$offset, $count)
     {
-        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " LIMIT $offset,$count");
-        $stm->execute();
+        $stm = $this->db->prepare("SELECT * FROM " . self::tableName . " WHERE user_id=:user_id ".' ORDER BY  id DESC'." LIMIT $offset,$count");
+        $stm->execute(array(':user_id' => $user_id));
         return $stm->fetchAll();
     }
     function getOrder($offset, $count)
     { //in admin order
         $stm = $this->db->prepare('SELECT o.id,o.time,o.status,o.notes,u.username FROM ordered o INNER JOIN user u ON u.id = o.user_id
-        ' . " LIMIT $offset,$count");
+        ' . "ORDER BY  id DESC LIMIT $offset,$count");
         $stm->execute();
         return $stm->fetchAll();
     }
@@ -29,7 +29,7 @@ class Order extends DB
     }
     function getProductListInOrder($id_order)
     {
-        $stm = $this->db->prepare("SELECT p.name,p.price,p.id,po.quantity,p.quantity_product FROM product p INNER JOIN products_orders po ON po.product_id=p.id INNER JOIN ordered o ON o.id=po.order_id " . " WHERE o.id=:id");
+        $stm = $this->db->prepare("SELECT p.name,p.price,p.id,po.quantity,p.quantity_product,p.selled FROM product p INNER JOIN products_orders po ON po.product_id=p.id INNER JOIN ordered o ON o.id=po.order_id " . " WHERE o.id=:id");
         $stm->execute(array(':id' => $id_order));
         return $stm->fetchAll();
     }
@@ -86,12 +86,13 @@ class Order extends DB
 
             if ($status == '2' && $check_status != 0) { //status = 2 la da nhan dc hang
                 foreach ($listProducts_QuantityOrder as $product) {
-
+                    $selled = $product['selled'] + $product['quantity'];
                     $quantity = $product['quantity_product'] - $product['quantity'];
                     $stm = $this->db->prepare('UPDATE  product' .
-                        ' SET quantity_product=:quantity WHERE id= :id');
+                        ' SET quantity_product=:quantity,selled=:selled WHERE id= :id');
                     $stm->execute(array( //product['quantity'] is the quantity of the order
                         ':quantity' => $quantity,
+                        ':selled' => $selled,
                         ':id' => $product['id']
                     ));
                 }

@@ -37,35 +37,65 @@ try {
     echo $e->getMessage();
 }
 ?>
+<style>
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+        bottom: .5em;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+    th {
+        cursor: pointer;
+    }
+</style>
 
 <body>
+
     <?php
     require_once('./../commons/nav_menu.php');
     ?>
-
-
     <div class="container">
-        <table class="table table-striped">
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        <p><strong>Click the headers to sort the table.</strong></p>
+        <p>The first time you click, the sorting direction is ascending (A to Z).</p>
+        <p>Click again, and the sorting direction will be descending (Z to A):</p>
+    </div>
+
+
+    <div class="container-fluid">
+        <table id="myTableSort" class="table table-striped  table-bordered table-sm" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Hình ảnh</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Thương hiệu</th>
-                    <!-- <th scope="col">Thể loại</th> -->
-                    <th scope="col">Giá</th>
-                    <th scope="col">Mô tả</th>
-                    <th scope="col">CPU</th>
-                    <th scope="col">RAM</th>
-                    <th scope="col">Card đồ họa</th>
-                    <th scope="col">Thao tác</th>
+                    <th onclick="sortTable(0)" class="th-sm" scope="col">#</th>
+                    <th onclick="sortTable()" class="th-sm" scope="col">Hình ảnh</th>
+                    <th onclick="sortTable(2)" class="th-sm" scope="col">Tên</th>
+                    <th onclick="sortTable(3)" class="th-sm" scope="col">Thương hiệu</th>
+                    <th onclick="sortTable(4)" class="th-sm" scope="col">Giá</th>
+                    <th onclick="sortTable(5)" class="th-sm" scope="col">Đã bán</th>
+                    <th onclick="sortTable(6)" class="th-sm" scope="col">Kho hàng</th>
+                    <th onclick="sortTable(7)" class="th-sm" scope="col">Mô tả</th>
+                    <th onclick="sortTable(8)" class="th-sm" scope="col">CPU</th>
+                    <th onclick="sortTable(9)" class="th-sm" scope="col">RAM</th>
+                    <th onclick="sortTable(10)" class="th-sm" scope="col">Card đồ họa</th>
+                    <th onclick="sortTable()" class="th-sm" scope="col">Thao tác</th>
                 </tr>
             </thead>
             <br>
             <a class="btn btn-primary" href="add.php">Thêm</a>
             <br>
             <br>
-            <tbody>
+            <tbody id="myTable">
                 <?php
                 foreach ($list as $r) {
                     $listImg = $products->getImg($r['id']);
@@ -76,10 +106,13 @@ try {
                         <td><?php echo $r['name'] ?></td>
                         <?php
                         $obj = $brand->getBrandById($r['brand_id']);
-                        ?>  
+                        ?>
                         <td><?php echo $obj['name'] ?></td>
-                     
-                        <td><?php echo number_format($r['price']). ' VND'?></td>
+
+                        <td><?php echo number_format($r['price']) . ' VND' ?></td>
+                        <td><?php echo $r['selled'] ?></td>
+                        <td><?php echo $r['quantity_product'] ?></td>
+
                         <td><?php echo $r['short_desc'] ?></td>
                         <td><?php echo $r['chip'] ?></td>
                         <td><?php echo $r['ram']  ?></td>
@@ -107,8 +140,76 @@ try {
             echo ' <button> <a href="?page=' . $pageCount . '">' . $pageCount . '</a></button>';
         }
         ?>
-    </div>
 
+    </div>
+    <script>
+        $(document).ready(function() {
+            // Filter on the table
+
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+        //sort data table
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTableSort");
+            switching = true;
+            //Set the sorting direction to ascending:
+            dir = "asc";
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    /*check if the two rows should switch place,
+                    based on the direction, asc or desc:*/
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /*If a switch has been marked, make the switch
+                    and mark that a switch has been done:*/
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    //Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /*If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again.*/
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 <?php
 require_once('./../commons/footer.php');
