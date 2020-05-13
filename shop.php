@@ -40,7 +40,6 @@ if (isset($_POST['sort'])) {
     $sort = '';
 }
 if (isset($conditions) && isset($_SESSION['condition'])) {
-
     $listProductsFilter = $products->getProductByFilter($_SESSION['condition'], $sort);
     $listProducts = $listProductsFilter;
 } else {
@@ -53,8 +52,8 @@ if (isset($conditions) && isset($_SESSION['condition'])) {
     <div class="zigzag-bottom"></div>
     <div class="container">
         <div class="row">
-            <?php if (isset($alert) && $alert != '')
-                echo '<div class="alert alert-primary" role="alert">' . 'Két quả lọc  cho : ' . $alert . '</div>';
+            <?php if (isset($_SESSION['alert']) && $_SESSION['alert'] != '')
+                echo '<div class="alert alert-primary" role="alert">' . 'Két quả lọc  cho : ' . $_SESSION['alert'] . '</div>';
             ?>
             <?php foreach ($listProducts as $product) { ?>
                 <?php $listImg = $products->getImg($product['id']); ?>
@@ -82,8 +81,8 @@ if (isset($conditions) && isset($_SESSION['condition'])) {
         <!-- show pagecontrol -->
         <div class="row">
             <?php
-            if (isset($conditions) && $conditions != '') {
-                $row = $pdo->query('select count(*) as count  from product WHERE ' . $conditions);
+            if (isset($conditions) && $_SESSION['condition'] != '') {
+                $row = $pdo->query('select count(*) as count  from product WHERE ' . $_SESSION['condition'] );
             } else {
                 $row = $pdo->query('select count(*) as count  from product');
             }

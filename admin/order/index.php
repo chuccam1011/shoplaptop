@@ -5,26 +5,16 @@ if (isset($_SESSION['success'])) {
     unset($_SESSION['success']);
 }
 $order = new Order();
-if (isset($_GET['action'])) {
-    $action = $_GET['action'];
-    switch ($action) {
-        case 'delete':
-            if (is_numeric($_GET['id'])) {
-                $cates->delete($_GET['id']);
-            }
-            break;
+//updat e status of order
 
-        default:
-            # code...
-            break;
-    }
-}
 if (isset($_GET['update_order_status'])) {
     $id = $_GET['id'];
     $status = $_GET['update_order_status'];
-    $alert = $order->update($id, $status);
-    if ($alert == 1) {
-        $_SESSION['success'] = 'Cap nhat thanh cong đơn hàng #'.$id;
+    //get details order to  update in tabnle product
+    $listProducts = $order->getProductListInOrder($id);
+    $result = $order->update($id, $status, $listProducts,$_GET['status']);
+    if ($result == 1) {
+        $_SESSION['success'] = 'Cap nhat thanh cong đơn hàng #' . $id;
     }
 }
 
@@ -37,7 +27,7 @@ if (isset($_GET['update_order_status'])) {
 
 
     <div class="container">
-        <?php if(isset($_SESSION['success'])) echo '<div class="alert alert-primary" role="alert">'.$_SESSION['success'].'</div>';?>
+        <?php if (isset($_SESSION['success'])) echo '<div class="alert alert-primary" role="alert">' . $_SESSION['success'] . '</div>'; ?>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -52,8 +42,7 @@ if (isset($_GET['update_order_status'])) {
             <br>
             <tbody>
                 <?php
-
-                $list = $order->getOrder(0, 10);
+                $list = $order->getOrder(0, 20);
                 foreach ($list as $r) {
                 ?>
                     <tr>
@@ -88,8 +77,8 @@ if (isset($_GET['update_order_status'])) {
                                         Cập nhật
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                        <a class="dropdown-item" href="?update_order_status=1&&id=<?php echo $r['id'] ?>">Đa giao cho DVVC</a>
-                                        <a class="dropdown-item" href="?update_order_status=2&&id=<?php echo $r['id'] ?>">Đã nhận</a>
+                                        <a class="dropdown-item" href="?status=<?php echo $r['status'] ?>update_order_status=1&&id=<?php echo $r['id'] ?>">Đa giao cho DVVC</a>
+                                        <a class="dropdown-item" href="?status=<?php echo $r['status'] ?>&&update_order_status=2&&id=<?php echo $r['id'] ?>">Đã nhận</a>
 
                                     </div>
                                 </div>

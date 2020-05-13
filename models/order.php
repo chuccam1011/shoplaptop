@@ -15,7 +15,7 @@ class Order extends DB
         return $stm->fetchAll();
     }
     function getOrder($offset, $count)
-    {
+    { //in admin order
         $stm = $this->db->prepare('SELECT o.id,o.time,o.status,o.notes,u.username FROM ordered o INNER JOIN user u ON u.id = o.user_id
         ' . " LIMIT $offset,$count");
         $stm->execute();
@@ -29,7 +29,7 @@ class Order extends DB
     }
     function getProductListInOrder($id_order)
     {
-        $stm = $this->db->prepare("SELECT p.name,p.price,p.id,po.quantity FROM product p INNER JOIN products_orders po ON po.product_id=p.id INNER JOIN ordered o ON o.id=po.order_id "." WHERE o.id=:id");
+        $stm = $this->db->prepare("SELECT p.name,p.price,p.id,po.quantity,p.quantity_product FROM product p INNER JOIN products_orders po ON po.product_id=p.id INNER JOIN ordered o ON o.id=po.order_id " . " WHERE o.id=:id");
         $stm->execute(array(':id' => $id_order));
         return $stm->fetchAll();
     }
@@ -78,11 +78,25 @@ class Order extends DB
         $this->db->query("DELETE FROM " . self::tableName . " WHERE id = " . $id);
     }
 
-    function update($id, $status) //for admin update status
+    function update($id, $status, $listProducts_QuantityOrder, $check_status) //for admin update status
     {
 
         try {
+            // update quantity_product
 
+            if ($status == '2' && $check_status != 0) { //status = 2 la da nhan dc hang
+                foreach ($listProducts_QuantityOrder as $product) {
+
+                    $quantity = $product['quantity_product'] - $product['quantity'];
+                    $stm = $this->db->prepare('UPDATE  product' .
+                        ' SET quantity_product=:quantity WHERE id= :id');
+                    $stm->execute(array( //product['quantity'] is the quantity of the order
+                        ':quantity' => $quantity,
+                        ':id' => $product['id']
+                    ));
+                }
+            }
+            //udate the status
             $stm = $this->db->prepare('UPDATE  ' .
                 self::tableName .
                 ' SET status=:status WHERE id = :id');

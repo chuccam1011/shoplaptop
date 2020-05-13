@@ -5,7 +5,7 @@ $product = new Product();
 $conditions = '';
 if (isset($_POST['filter'])) {
     $filters = array();
-    $alert = '';
+    $_SESSION['alert'] = '';
     foreach ($_POST as $key => $value) {
         if ($key != 'sort' && $value != '') {
             $filters[$key] = $value;
@@ -17,10 +17,10 @@ if (isset($_POST['filter'])) {
         $i++;
         if ($i == count($filters)) {
             $condition = $key . ' LIKE ' . "'" . '%' . $value . '%' . "'";
-            $alert = $alert . $key . ' = '  . $value . ' ';
+            $_SESSION['alert'] = $_SESSION['alert'] . $key . ' = '  . $value . ' ';
         } else {
             $condition = $key . ' LIKE ' . "'" . '%' . $value . '%' . "'" . ' AND ';
-            $alert = $alert . $key . ' = '  . $value . ' , ';
+            $_SESSION['alert'] = $_SESSION['alert'] . $key . ' = '  . $value . ' , ';
         }
 
         $conditions = $conditions . $condition;
